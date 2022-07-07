@@ -14,6 +14,8 @@ public class DiffBetwnNumber {
 			else if (num[i] < min)
 				min = num[i];
 		}
+		
+		//sarika
 		System.out.println("Difference between the largest and smallest araay element is: " + (maxval - min));
 	}
 }
