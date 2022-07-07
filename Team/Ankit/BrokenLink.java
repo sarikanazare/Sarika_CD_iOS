@@ -15,6 +15,8 @@ void launchBrowser()
 	driver.manage().window().maximize();
 	System.out.println("Windows maximize");
 }
+
+
 	public static void main(String[] args) {
 		
 
