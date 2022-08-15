@@ -1,22 +1,24 @@
-package Programs;
-
-import java.util.ArrayList;
-import java.util.Collections;
+package JavaPrograms;
 
 public class FrequencyOfWord {
-		public static void main(String[] args) {
-		    String givenstring = "Today is monday and today is wonderful day";
-		    String[] words = givenstring.split(" ");
 
-		    ArrayList<String> arr = new ArrayList<String>();
-		    for (int i = 0; i < words.length; i++){
-		      arr.add(words[i]);
-		    }
-		    while (arr.size() != 0) {
-		      String word = arr.get(0);
-		      int frequency = Collections.frequency(arr, word);
-		      arr.removeAll(Collections.singleton(word));
-		      System.out.println(word + frequency);
-		    }
-		  }
+	public static void checkFrequency(String str, String s1) {
+	 int count = 0;
+     System.out.println(str);
+     String s[] = str.split(" ");
+     for (int i = 0; i < s.length; i++) {
+
+         if (s[i].contains(s1)) {
+             count++;
+
+         }
+
+     }
+     System.out.println("Occurrence of good word is " + count);
+	}
+
+ public static void main(String[] args) {
+     checkFrequency("Today is monday and today is wonderful day","day");
+
+}
 }
