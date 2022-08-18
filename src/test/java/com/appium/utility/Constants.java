@@ -11,7 +11,8 @@ import io.appium.java_client.android.AndroidDriver;
 
 import java.net.URL;
 public class Constants {
-	
+	public static String JenkinsBrowser = System.getProperty("jenkinsBrowser");
+	public static String BrowserStack = System.getProperty("browserStack");
 	public static String RANDOM_VALUE = "";
 	public static Reusables key;
 	public static MobileDriver<MobileElement> driver;

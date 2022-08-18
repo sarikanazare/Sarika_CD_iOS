@@ -55,39 +55,42 @@ public class Reusables {
 
 	public String emailID;
 
-//public String launchApp() throws Exception {
+	// public String launchApp() throws Exception {
 	public String launchApp(String app) throws Exception {
 		try {
 			String appVersion = "";
 			// Writing logs in log file
 			LogCapture.info("Application setup started............");
 			// Checking platform for setting up desired capabilities
-			if (Constants.CONFIG.getProperty("platformName").equalsIgnoreCase("Android")) {		//Why PlatformName Feature File will look ok to pic platform name
-				
+			if (Constants.CONFIG.getProperty("platformName").equalsIgnoreCase("Android")) { // Why
+																							// PlatformName
 				// Reading properties file and setting up desired capabilities
 				// for android platform
 				Constants.androidDc = new DesiredCapabilities();
 				Constants.androidDc.setCapability("deviceName", Constants.CONFIG.getProperty("Loc_AndroidDeviceName"));
 				Constants.androidDc.setCapability("udid", Constants.CONFIG.getProperty("Loc_AndroidDeviceUdId"));
-				Constants.androidDc.setCapability("platformVersion", Constants.CONFIG.getProperty("Loc_AndroidPlatformVersion"));
+				Constants.androidDc.setCapability("platformVersion",
+						Constants.CONFIG.getProperty("Loc_AndroidPlatformVersion"));
 				Constants.androidDc.setCapability("skipUnlock", "true");
 
-			    Constants.androidDc.setCapability("appVersion", Constants.CONFIG.getProperty("AndroidPlatformVersion"));
+				Constants.androidDc.setCapability("appVersion", Constants.CONFIG.getProperty("AndroidPlatformVersion"));
 				Constants.androidDc.setCapability("uiautomator2ServerInstallTimeout", 800000);
 				Constants.androidDc.setCapability("noReset", "false");
 				Constants.appiumServerUrl = Constants.CONFIG.getProperty("appiumServerUrl");
 				Constants.androidDc.setCapability("platformName", Constants.CONFIG.getProperty("platformName"));
-				
+
 				if (app.equalsIgnoreCase("CD")) {
-					Constants.androidDc.setCapability("appActivity", Constants.CONFIG.getProperty("CDAndroidAppActivity:"));
-					Constants.androidDc.setCapability(MobileCapabilityType.APP,
-							System.getProperty("user.dir") + "/Applications/CDAndroid/" + Constants.CONFIG.getProperty("CDAndroidAppVersion"));
+					Constants.androidDc.setCapability("appActivity",
+							Constants.CONFIG.getProperty("CDAndroidAppActivity:"));
+					Constants.androidDc.setCapability(MobileCapabilityType.APP, System.getProperty("user.dir")
+							+ "/Applications/CDAndroid/" + Constants.CONFIG.getProperty("CDAndroidAppVersion"));
 					Constants.androidDc.setCapability("appPackage",
 							Constants.CONFIG.getProperty("AndroidCDAppPackage"));
 				} else if (app.equalsIgnoreCase("TorFX")) {
-					Constants.androidDc.setCapability("appActivity", Constants.CONFIG.getProperty("TorFXAndroidAppActivity:"));
-					Constants.androidDc.setCapability(MobileCapabilityType.APP,
-							System.getProperty("user.dir") + "/Applications/TorFxAndroid/" + Constants.CONFIG.getProperty("TorFXAndroidAppVersion"));
+					Constants.androidDc.setCapability("appActivity",
+							Constants.CONFIG.getProperty("TorFXAndroidAppActivity:"));
+					Constants.androidDc.setCapability(MobileCapabilityType.APP, System.getProperty("user.dir")
+							+ "/Applications/TorFxAndroid/" + Constants.CONFIG.getProperty("TorFXAndroidAppVersion"));
 					Constants.androidDc.setCapability("appPackage",
 							Constants.CONFIG.getProperty("AndroidTorFxPackage"));
 				}
@@ -97,14 +100,17 @@ public class Reusables {
 				Constants.driver = new AndroidDriver<MobileElement>(new URL(Constants.appiumServerUrl),
 						Constants.androidDc);
 				// WebdriverWait implementation
-				int waitInSeconds = Integer.parseInt(Constants.CONFIG.getProperty("waitInSecondforAndroid")); //Why form congif
+				int waitInSeconds = Integer.parseInt(Constants.CONFIG.getProperty("waitInSecondforAndroid")); // Why
+																												// form
+																												// congif
 				Constants.wait = new WebDriverWait(Constants.driver, waitInSeconds);
 				takeSnapShot();
 
 			}
 
 			else if (Constants.CONFIG.getProperty("platformName").equalsIgnoreCase("iOS")) {
-				// Reading properties file and setting up desired capabilities for iOS platform
+				// Reading properties file and setting up desired capabilities
+				// for iOS platform
 				Constants.IOSDC = new DesiredCapabilities();
 				Constants.IOSDC.setCapability(MobileCapabilityType.DEVICE_NAME,
 						Constants.CONFIG.getProperty("Loc_IOSDeviceName"));
@@ -125,10 +131,12 @@ public class Reusables {
 				Constants.IOSDC.setCapability("xcodeOrgId", Constants.CONFIG.getProperty("xcodeOrgId"));
 				Constants.IOSDC.setCapability("xcodeSigningId", Constants.CONFIG.getProperty("xcodeSigningId"));
 
-				// LogCapture.info("Appplication installation process started.........");
+				// LogCapture.info("Appplication installation process
+				// started.........");
 				// iOS app path to install on device
 				// Constants.IOSDC.setCapability(MobileCapabilityType.APP,System.getProperty("user.dir")
-				// + "/Application/CDIOSApplication/Version 3.0 (19)/CDHApplication.app");
+				// + "/Application/CDIOSApplication/Version 3.0
+				// (19)/CDHApplication.app");
 				if (app.equalsIgnoreCase("CD")) {
 					appVersion = Constants.CONFIG.getProperty("iOSCDAppVersion");
 					Constants.IOSDC.setCapability(MobileCapabilityType.APP, System.getProperty("user.dir")
@@ -172,8 +180,10 @@ public class Reusables {
 					Constants.CONFIG.getProperty("platformName"));
 			Constants.IOSDC.setCapability(MobileCapabilityType.PLATFORM_VERSION,
 					Constants.CONFIG.getProperty("Loc_IOSPlatformVersion"));
-			// Constants.IOSDC.setCapability(MobileCapabilityType.NO_RESET, false);
-			// Constants.IOSDC.setCapability(MobileCapabilityType.FULL_RESET, false);
+			// Constants.IOSDC.setCapability(MobileCapabilityType.NO_RESET,
+			// false);
+			// Constants.IOSDC.setCapability(MobileCapabilityType.FULL_RESET,
+			// false);
 			Constants.IOSDC.setCapability(MobileCapabilityType.AUTOMATION_NAME,
 					Constants.CONFIG.getProperty("automationName"));
 			Constants.IOSDC.setCapability("useNewWDA", false);
@@ -212,40 +222,42 @@ public class Reusables {
 			Constants.androidDc = new DesiredCapabilities();
 			Constants.androidDc.setCapability("deviceName", Constants.CONFIG.getProperty("Loc_AndroidDeviceName"));
 			Constants.androidDc.setCapability("udid", Constants.CONFIG.getProperty("Loc_AndroidDeviceUdId"));
-			Constants.androidDc.setCapability("platformVersion", Constants.CONFIG.getProperty("Loc_AndroidPlatformVersion"));
+			Constants.androidDc.setCapability("platformVersion",
+					Constants.CONFIG.getProperty("Loc_AndroidPlatformVersion"));
 			Constants.androidDc.setCapability("skipUnlock", "true");
 			if (app.equalsIgnoreCase("CD")) {
-			Constants.androidDc.setCapability("appPackage", Constants.CONFIG.getProperty("AndroidCDAppPackage"));
-			}else if (app.equalsIgnoreCase("TorFX")) {	
-				Constants.androidDc.setCapability("appPackage",Constants.CONFIG.getProperty("AndroidTorFxPackage"));
+				Constants.androidDc.setCapability("appPackage", Constants.CONFIG.getProperty("AndroidCDAppPackage"));
+			} else if (app.equalsIgnoreCase("TorFX")) {
+				Constants.androidDc.setCapability("appPackage", Constants.CONFIG.getProperty("AndroidTorFxPackage"));
 			}
 			Constants.androidDc.setCapability("appActivity", Constants.CONFIG.getProperty("CDAndroidAppActivity"));
 			Constants.androidDc.setCapability("appVersion", Constants.CONFIG.getProperty("AndroidPlatformVersion"));
 			Constants.androidDc.setCapability("uiautomator2ServerInstallTimeout", 1800000);
-		    Constants.androidDc.setCapability("unicodeKeyboard", true);
+			Constants.androidDc.setCapability("unicodeKeyboard", true);
 			Constants.androidDc.setCapability("noReset", "false");
 			Constants.appiumServerUrl = Constants.CONFIG.getProperty("Loc_appiumServerUrl");
 			Constants.androidDc.setCapability("platformName", Constants.CONFIG.getProperty("platformName"));
 
 			Constants.appiumServerUrl = Constants.CONFIG.getProperty("Loc_appiumServerUrl");
 			// creating android driver instance
-			
+
 			Constants.driver = new AndroidDriver<MobileElement>(new URL(Constants.appiumServerUrl),
 					Constants.androidDc);
-			// WebdriverWait implementation	
-			
-	
+			// WebdriverWait implementation
+
 			int waitInSeconds = Integer.parseInt(Constants.CONFIG.getProperty("waitInSecondforAndroid"));
 			Constants.wait = new WebDriverWait(Constants.driver, waitInSeconds);
 			takeSnapShot();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			LogCapture.info("launching already instlled app process failed...Please check provided configuration details.........!!!!");
+			LogCapture.info(
+					"launching already instlled app process failed...Please check provided configuration details.........!!!!");
 			return Constants.KEYWORD_FAIL;
 		}
 		return Constants.KEYWORD_PASS;
 	}
-//App center integration reusables	
+
+	// App center integration reusables
 	public String getAppDownloadUrl(String app) {
 		File file = new File(System.getProperty("user.dir") + "/src/Config/browserstackConfig.properties");
 		try (FileInputStream in = new FileInputStream(file)) {
@@ -334,15 +346,15 @@ public class Reusables {
 		getAppVersion(appVersion);
 		// System.out.println("USER IS ON POST API METHOD END POINT");
 	}
-	
-	public String launchAppOnBrowserStack(String Platform,String app) throws Exception {
+
+	public String launchAppOnBrowserStack(String Platform, String app) throws Exception {
 		String username = Constants.CONFIG.getProperty("BS_Username");
 		String accesskey = Constants.CONFIG.getProperty("BS_AccessToken");
-		
+
 		try {
 			// Writing logs in log file
-			
-			LogCapture.info("Application setup started on browser stack............");   
+
+			LogCapture.info("Application setup started on browser stack............");
 			SimpleDateFormat formatDateTime = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 			String DateTime = formatDateTime.format(new Date());
 			SimpleDateFormat formatDayMonth = new SimpleDateFormat("dd MMMM");
@@ -352,21 +364,26 @@ public class Reusables {
 			// Checking platform for setting up desired capabilities
 			if (Platform.equalsIgnoreCase("Android")) {
 
-				// Reading properties file and setting up desired capabilities for iOS platform
+				// Reading properties file and setting up desired capabilities
+				// for iOS platform
 				String AndroidDeviceName = Constants.CONFIG.getProperty("BS_AndroidDevice");
 				String AndroidDeviceVersion = Constants.CONFIG.getProperty("BS_AndroidPlatformVersion");
 
-				LogCapture.info("Opening "+app+" Application on "+Platform+" Device "+AndroidDeviceName+" Version "+AndroidDeviceVersion+" ............");
+				LogCapture.info("Opening " + app + " Application on " + Platform + " Device " + AndroidDeviceName
+						+ " Version " + AndroidDeviceVersion + " ............");
 				Constants.androidDc = new DesiredCapabilities();
 
 				Constants.androidDc.setCapability("device", AndroidDeviceName);
-				Constants.androidDc.setCapability("os_version",AndroidDeviceVersion);
+				Constants.androidDc.setCapability("os_version", AndroidDeviceVersion);
 				Constants.androidDc.setCapability("project", "CD Android");
-				//Constants.androidDc.setCapability("build", "Android - "+day);
-				//Constants.androidDc.setCapability("name", date + " - "+ Constants.TagNames);
+				// Constants.androidDc.setCapability("build", "Android - "+day);
+				// Constants.androidDc.setCapability("name", date + " - "+
+				// Constants.TagNames);
 				// Constants.IOSDC.setCapability("browserstack.debug", "true");
-				//Constants.androidDc.setCapability("build", "Android - "+DayMonth);
-				//Constants.androidDc.setCapability("name", TimeStamp + " - "+ Constants.TagNames);
+				// Constants.androidDc.setCapability("build", "Android -
+				// "+DayMonth);
+				// Constants.androidDc.setCapability("name", TimeStamp + " - "+
+				// Constants.TagNames);
 				Constants.androidDc.setCapability("build", DateTime);
 				Constants.androidDc.setCapability("name", "CD Android");
 				Constants.androidDc.setCapability("platformName", Constants.CONFIG.getProperty("platformName"));
@@ -375,11 +392,11 @@ public class Reusables {
 
 				if (app.equalsIgnoreCase("CD")) {
 					// Browserstack app path
-					LogCapture.info("Installing "+app+" Application............");
+					LogCapture.info("Installing " + app + " Application............");
 					Constants.androidDc.setCapability(MobileCapabilityType.APP,
 							"bs://" + Constants.CONFIG.getProperty("BS_AndroidCDAppVersion"));
 				} else if (app.equalsIgnoreCase("TorFX")) {
-					LogCapture.info("Installing "+app+" Application............");
+					LogCapture.info("Installing " + app + " Application............");
 					Constants.androidDc.setCapability(MobileCapabilityType.APP,
 							"bs://" + Constants.CONFIG.getProperty("BS_AndroidTorFXAppVersion"));
 				}
@@ -393,32 +410,36 @@ public class Reusables {
 			}
 
 			else if (Platform.equalsIgnoreCase("iOS")) {
-				// Reading properties file and setting up desired capabilities for iOS platform
+				// Reading properties file and setting up desired capabilities
+				// for iOS platform
 
 				String iOSDeviceName = Constants.CONFIG.getProperty("BS_iOSDevice");
 				String iOSDeviceVersion = Constants.CONFIG.getProperty("BS_iOSPlatformVersion");
-				LogCapture.info("Opening "+app+" Application on "+Platform+" Device "+iOSDeviceName+" Version "+iOSDeviceVersion+" ............");
+				LogCapture.info("Opening " + app + " Application on " + Platform + " Device " + iOSDeviceName
+						+ " Version " + iOSDeviceVersion + " ............");
 				Constants.IOSDC = new DesiredCapabilities();
 				Constants.IOSDC.setCapability("device", iOSDeviceName);
 				Constants.IOSDC.setCapability("os_version", iOSDeviceVersion);
 				Constants.IOSDC.setCapability("project", "CD iOS");
-				//Constants.IOSDC.setCapability("build", "iOS - "+day);
-				//Constants.IOSDC.setCapability("name", date + " - "+ Constants.TagNames);
+				// Constants.IOSDC.setCapability("build", "iOS - "+day);
+				// Constants.IOSDC.setCapability("name", date + " - "+
+				// Constants.TagNames);
 				// Constants.IOSDC.setCapability("browserstack.debug", "true");
-				Constants.IOSDC.setCapability("build", "iOS _"+DayMonth);
-				//Constants.androidDc.setCapability("name", TimeStamp + " - "+ Constants.TagNames);
+				Constants.IOSDC.setCapability("build", "iOS _" + DayMonth);
+				// Constants.androidDc.setCapability("name", TimeStamp + " - "+
+				// Constants.TagNames);
 				// Constants.IOSDC.setCapability("build", DateTime);
 				Constants.IOSDC.setCapability("name", "CD iOS");
 				if (app.equalsIgnoreCase("CD")) {
 					// Browserstack app path
-					//Constants.IOSDC.setCapability(MobileCapabilityType.APP, Constants.BrowserCONFIG.getProperty("AppVersion"));
-					String VarBS_iOSCDAppVersion = Constants.CONFIG.getProperty("BS_iOSCDAppVersion");
-					LogCapture.info("Installing "+app+" Application with "+VarBS_iOSCDAppVersion+" Version............");
-					//LogCapture.info("Installing "+app+" Application............");
-					Constants.IOSDC.setCapability(MobileCapabilityType.APP,"bs://" + VarBS_iOSCDAppVersion);
-					
+					// Constants.IOSDC.setCapability(MobileCapabilityType.APP,
+					// Constants.BrowserCONFIG.getProperty("AppVersion"));
+					LogCapture.info("Installing " + app + " Application............");
+					Constants.IOSDC.setCapability(MobileCapabilityType.APP,
+							"bs://" + Constants.CONFIG.getProperty("BS_iOSCDAppVersion"));
+
 				} else if (app.equalsIgnoreCase("TorFX")) {
-					LogCapture.info("Installing "+app+" Application............");
+					LogCapture.info("Installing " + app + " Application............");
 					Constants.IOSDC.setCapability(MobileCapabilityType.APP,
 							"bs://" + Constants.CONFIG.getProperty("BS_iOSTorFXAppVersion"));
 				}
@@ -464,28 +485,25 @@ public class Reusables {
 		return Constants.KEYWORD_PASS;
 
 	}
-	
-	
-	public String launchExistingAppOnBrowserStackAndroid() throws Exception
-	{
-		try
-		{
+
+	public String launchExistingAppOnBrowserStackAndroid() throws Exception {
+		try {
 			Constants.driver.closeApp();
 			Constants.driver.launchApp();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			LogCapture.info("Installation or launching app process failed...Please check provided configuration details.........!!!!");
+			LogCapture.info(
+					"Installation or launching app process failed...Please check provided configuration details.........!!!!");
 			return Constants.KEYWORD_FAIL;
 		}
 		return Constants.KEYWORD_PASS;
 	}
-	
+
 	// Method to write input
 	public String writeInInput(String objectPath, String data) throws Exception {
 		try {
-			// Assert.assertEquals(Constants.KEYWORD_PASS, eleLocatedDisplayed(objectPath));
+			// Assert.assertEquals(Constants.KEYWORD_PASS,
+			// eleLocatedDisplayed(objectPath));
 			// Constants.driver.findElement(By.xpath(objectPath)).clear();
 			Constants.driver.findElement(By.xpath(objectPath)).sendKeys(data);
 			takeSnapShot();
@@ -526,11 +544,12 @@ public class Reusables {
 	}
 
 	// Click method without visibility check
-	// Below code commented because for some element visible property is false and
+	// Below code commented because for some element visible property is false
+	// and
 	// enabled property is true
 	public String clickWithoutVisibilityChk(String objectPath) throws Exception {
 		try {
-			 //Constants.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(objectPath)));
+			// Constants.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(objectPath)));
 			// Constants.wait.until(ExpectedConditions.elementToBeClickable(By.xpath(objectPath)));
 			Constants.driver.findElement(By.xpath(objectPath)).click();
 			takeSnapShot();
@@ -546,7 +565,8 @@ public class Reusables {
 		try {
 
 			MobileElement ele = Constants.driver.findElement(By.xpath("//*[@label=\"Remove account\"]"));
-			// MobileElement ele= Constants.driver.findElement(By.xpath(objectPath));
+			// MobileElement ele=
+			// Constants.driver.findElement(By.xpath(objectPath));
 			JavascriptExecutor executor = (JavascriptExecutor) Constants.driver;
 			executor.executeScript("arguments[0].click();", ele);
 			takeSnapShot();
@@ -601,7 +621,8 @@ public class Reusables {
 			}
 			return attributeValue;
 		} catch (Exception e) {
-			// System.out.println("Unable to get attribute value " + e.getMessage());
+			// System.out.println("Unable to get attribute value " +
+			// e.getMessage());
 			takeSnapShot();
 			return Constants.KEYWORD_FAIL;
 		}
@@ -693,8 +714,8 @@ public class Reusables {
 		 * if(mobileSim.equalsIgnoreCase("No SIM")){ System.out.
 		 * println("SIM Card not inserted...Unable to on mobile data...!!!!"); }
 		 * 
-		 * else if(mobileSim.equalsIgnoreCase("SIM")){ //Code not implemented for mobile
-		 * data connection }
+		 * else if(mobileSim.equalsIgnoreCase("SIM")){ //Code not implemented
+		 * for mobile data connection }
 		 */
 
 		return Constants.KEYWORD_PASS;
@@ -730,10 +751,12 @@ public class Reusables {
 			}
 			if (wifiStatus.equalsIgnoreCase("0")) {
 				Constants.key.click(Constants.IOSExtAppData.getProperty("WifiSwitch"));
-				// Swipe("//XCUIElementTypeStaticText[@name='Wi-Fi']", "right",1);
+				// Swipe("//XCUIElementTypeStaticText[@name='Wi-Fi']",
+				// "right",1);
 			} else if (wifiStatus.equalsIgnoreCase("1")) {
 				System.out.println("Wifi switch on");
-				// Swipe("//XCUIElementTypeStaticText[@name='Wi-Fi']", "right",1);
+				// Swipe("//XCUIElementTypeStaticText[@name='Wi-Fi']",
+				// "right",1);
 			}
 			Constants.driver.resetApp();
 			switchApp((Constants.CONFIG.getProperty("bundleId")));
@@ -745,8 +768,8 @@ public class Reusables {
 		 * if(mobileSim.equalsIgnoreCase("No SIM")){ System.out.
 		 * println("SIM Card not inserted...Unable to on mobile data...!!!!"); }
 		 * 
-		 * else if(mobileSim.equalsIgnoreCase("SIM")){ //Code not implemented for mobile
-		 * data connection }
+		 * else if(mobileSim.equalsIgnoreCase("SIM")){ //Code not implemented
+		 * for mobile data connection }
 		 */
 		return Constants.KEYWORD_PASS;
 	}
@@ -829,14 +852,14 @@ public class Reusables {
 		List<MobileElement> elementList = Constants.driver.findElements(By.xpath(vObjEle));
 		return elementList;
 	}
-	
 
 	public String scrollInIOS(String eleText, String direction) throws Exception {
 		try {
 			MobileElement element = (MobileElement) Constants.driver.findElement(By.className("XCUIElementTypeTable"));
 			String elementID = element.getId();
 			HashMap<String, String> scrollObject = new HashMap<String, String>();
-			scrollObject.put(eleText, elementID); // Only for ‘scroll in element’
+			scrollObject.put(eleText, elementID); // Only for ‘scroll in
+													// element’
 			scrollObject.put("direction", direction);
 			((JavascriptExecutor) Constants.driver).executeScript("mobile:scroll", scrollObject);
 			return Constants.KEYWORD_PASS;
@@ -853,7 +876,10 @@ public class Reusables {
 					.findElement(By.className("XCUIElementTypeStaticText"));
 			String elementID = element.getId();
 			HashMap<String, String> scrollObject = new HashMap<String, String>();
-			scrollObject.put("terms and conditions", elementID); // Only for ‘scroll in element’
+			scrollObject.put("terms and conditions", elementID); // Only for
+																	// ‘scroll
+																	// in
+																	// element’
 			// scrollObject.put("direction", direction);
 			((JavascriptExecutor) Constants.driver).executeScript("mobile:tap", scrollObject);
 			return Constants.KEYWORD_PASS;
@@ -934,13 +960,16 @@ public class Reusables {
 	public static String getAlphaNumericString(int n) {
 		// chose a Character random from this String
 		String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "0123456789" + "abcdefghijklmnopqrstuvxyz";
-		StringBuilder sb = new StringBuilder(n); // create StringBuffer size of AlphaNumericString
+		StringBuilder sb = new StringBuilder(n); // create StringBuffer size of
+													// AlphaNumericString
 
 		for (int i = 0; i < n; i++) {
-			// generate a random number between 0 to AlphaNumericString variable length
+			// generate a random number between 0 to AlphaNumericString variable
+			// length
 			int index = (int) (AlphaNumericString.length() * Math.random());
 
-			sb.append(AlphaNumericString.charAt(index)); // add Character one by one in end of sb
+			sb.append(AlphaNumericString.charAt(index)); // add Character one by
+															// one in end of sb
 		}
 		return sb.toString();
 	}
@@ -948,87 +977,87 @@ public class Reusables {
 	public static String generateEmail(int length, String domain) {
 		return getAlphaNumericString(length) + "@" + domain;
 	}
-	
 
-public String KeyboardAction(String object, String data) throws Exception {
-	try {
-		if (data.equalsIgnoreCase("enter")) {
-			Constants.driver.findElement(By.xpath(object)).sendKeys(Keys.ENTER);
+	public String KeyboardAction(String object, String data) throws Exception {
+		try {
+			if (data.equalsIgnoreCase("enter")) {
+				Constants.driver.findElement(By.xpath(object)).sendKeys(Keys.ENTER);
+				takeSnapShot();
+			} else if (data.equalsIgnoreCase("tab")) {
+				Constants.driver.findElement(By.xpath(object)).sendKeys(Keys.TAB);
+				takeSnapShot();
+			} else if (data.equalsIgnoreCase("space")) {
+				Constants.driver.findElement(By.xpath(object)).sendKeys(Keys.SPACE);
+				takeSnapShot();
+			} else if (data.equalsIgnoreCase("downArrow")) {
+				Constants.driver.findElement(By.xpath(object)).sendKeys(Keys.ARROW_DOWN);
+				takeSnapShot();
+			} else if (data.equalsIgnoreCase("selectall")) {
+				Constants.driver.findElement(By.xpath(object)).sendKeys(Keys.chord(Keys.CONTROL, "a"));
+				takeSnapShot();
+			}
+			return Constants.KEYWORD_PASS;
+		} catch (Exception e) {
 			takeSnapShot();
-		} else if (data.equalsIgnoreCase("tab")) {
-			Constants.driver.findElement(By.xpath(object)).sendKeys(Keys.TAB);
-			takeSnapShot();
-		} else if (data.equalsIgnoreCase("space")) {
-			Constants.driver.findElement(By.xpath(object)).sendKeys(Keys.SPACE);
-			takeSnapShot();
-		} else if (data.equalsIgnoreCase("downArrow")) {
-			Constants.driver.findElement(By.xpath(object)).sendKeys(Keys.ARROW_DOWN);
-			takeSnapShot();
-		} else if (data.equalsIgnoreCase("selectall")) {
-			Constants.driver.findElement(By.xpath(object)).sendKeys(Keys.chord(Keys.CONTROL, "a"));
-			takeSnapShot();
+			return Constants.KEYWORD_FAIL;
+		}
+
+	}
+
+	// *****************Android Missing Reusables***********************
+
+	// Reading current device platform version to identify whether appium
+	// supports
+	// or not
+	public String verifyPlatformVersion() {
+
+		String platformVersion = null;
+		if (Constants.CONFIG.getProperty("platformName").equalsIgnoreCase("Android")) {
+			AndroidDriver<MobileElement> driver = (AndroidDriver<MobileElement>) Constants.driver;
+			platformVersion = driver.getCapabilities().getCapability("AndroidPlatformVersion").toString();
+			int version = 0;
+			if (platformVersion != null)
+				version = Integer.parseInt(platformVersion.split(".")[0]);
+			if (version <= 5)
+				return Constants.KEYWORD_FAIL;
+		}
+
+		else if (Constants.CONFIG.getProperty("platformName").equalsIgnoreCase("IOS")) {
+			IOSDriver<MobileElement> driver = (IOSDriver<MobileElement>) Constants.driver;
+			platformVersion = driver.getCapabilities().getCapability("AndroidPlatformVersion").toString();
+			// IOS code not implemented will implement when testing started on
+			// IOS
 		}
 		return Constants.KEYWORD_PASS;
-	} catch (Exception e) {
-		takeSnapShot();
-		return Constants.KEYWORD_FAIL;
 	}
-	
-}
 
-//*****************Android Missing Reusables***********************
+	public String getAppVersion() {
+		String appVersion = null;
+		if (Constants.CONFIG.getProperty("platformName").equalsIgnoreCase("Android")) {
+			AndroidDriver<MobileElement> driver = (AndroidDriver<MobileElement>) Constants.driver;
+			appVersion = driver.getCapabilities().getCapability("AndroidAppVersion").toString();
+		}
 
+		else if (Constants.CONFIG.getProperty("platformName").equalsIgnoreCase("IOS")) {
+			IOSDriver<MobileElement> driver = (IOSDriver<MobileElement>) Constants.driver;
+			appVersion = driver.getCapabilities().getCapability("AndroidAppVersion").toString();
+		}
+		return appVersion;
+	}
 
-// Reading current device platform version to identify whether appium
-// supports
-// or not
-public String verifyPlatformVersion() {
-
-	String platformVersion = null;
-	if (Constants.CONFIG.getProperty("platformName").equalsIgnoreCase("Android")) {
-		AndroidDriver<MobileElement> driver = (AndroidDriver<MobileElement>) Constants.driver;
-		platformVersion = driver.getCapabilities().getCapability("AndroidPlatformVersion").toString();
-		int version = 0;
-		if (platformVersion != null)
-			version = Integer.parseInt(platformVersion.split(".")[0]);
-		if (version <= 5)
+	public String click(MobileElement element) throws Exception {
+		try {
+			element.click();
+			takeSnapShot();
+		} catch (Exception e) {
+			takeSnapShot();
+			System.out.println("Unable to click : " + e.getMessage());
 			return Constants.KEYWORD_FAIL;
+		}
+		return Constants.KEYWORD_PASS;
 	}
 
-	else if (Constants.CONFIG.getProperty("platformName").equalsIgnoreCase("IOS")) {
-		IOSDriver<MobileElement> driver = (IOSDriver<MobileElement>) Constants.driver;
-		platformVersion = driver.getCapabilities().getCapability("AndroidPlatformVersion").toString();
-		// IOS code not implemented will implement when testing started on
-		// IOS
-	}
-	return Constants.KEYWORD_PASS;
-}
-
-public String getAppVersion() {
-	String appVersion = null;
-	if (Constants.CONFIG.getProperty("platformName").equalsIgnoreCase("Android")) {
-		AndroidDriver<MobileElement> driver = (AndroidDriver<MobileElement>) Constants.driver;
-		appVersion = driver.getCapabilities().getCapability("AndroidAppVersion").toString();
-	}
-
-	else if (Constants.CONFIG.getProperty("platformName").equalsIgnoreCase("IOS")) {
-		IOSDriver<MobileElement> driver = (IOSDriver<MobileElement>) Constants.driver;
-		appVersion = driver.getCapabilities().getCapability("AndroidAppVersion").toString();
-	}
-	return appVersion;
-}
-public String click(MobileElement element) throws Exception {
-	try {
-		element.click();
-		takeSnapShot();
-	} catch (Exception e) {
-		takeSnapShot();
-		System.out.println("Unable to click : " + e.getMessage());
-		return Constants.KEYWORD_FAIL;
-	}
-	return Constants.KEYWORD_PASS;
-}
-//Need to check for Android
+	// Need to check for Android
 	// To check element is clickable
 	public String elementClickable(String objectPath) {
 
@@ -1041,189 +1070,200 @@ public String click(MobileElement element) throws Exception {
 		}
 		return Constants.KEYWORD_PASS;
 	}
+
 	// To check element is active or not
-		public String isElementActive(String objectPath) throws Exception {
+	public String isElementActive(String objectPath) throws Exception {
 
-			try {
-				Constants.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(objectPath)));
-				Constants.driver.findElement(By.xpath(objectPath)).isEnabled();
+		try {
+			Constants.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(objectPath)));
+			Constants.driver.findElement(By.xpath(objectPath)).isEnabled();
 
-			} catch (Exception e) {
-				// TODO: handle exception
-				System.out.println("Element is inactive : " + e.getMessage());
-				takeSnapShot();
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Element is inactive : " + e.getMessage());
+			takeSnapShot();
 
-				return Constants.KEYWORD_FAIL;
-			}
-			return Constants.KEYWORD_PASS;
+			return Constants.KEYWORD_FAIL;
 		}
-		public String isElementPresent(String objectPath, int waitInSeconds) throws Exception {
-			try {
-				WebDriverWait wait = new WebDriverWait(Constants.driver, waitInSeconds);
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(objectPath)));
-				Constants.driver.findElement(By.xpath(objectPath));
+		return Constants.KEYWORD_PASS;
+	}
 
-			} catch (Exception e) {
-				System.out.println("Element is not Present ");
-				takeSnapShot();
+	public String isElementPresent(String objectPath, int waitInSeconds) throws Exception {
+		try {
+			WebDriverWait wait = new WebDriverWait(Constants.driver, waitInSeconds);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(objectPath)));
+			Constants.driver.findElement(By.xpath(objectPath));
 
-				return Constants.KEYWORD_FAIL;
-			}
-			return Constants.KEYWORD_PASS;
+		} catch (Exception e) {
+			System.out.println("Element is not Present ");
+			takeSnapShot();
+
+			return Constants.KEYWORD_FAIL;
 		}
-		public String swipeHorizontal(int startPercentage, int finalPercentage, int anchorPercentage) {
-			try {
-				Dimension size = Constants.driver.manage().window().getSize();
-				int anchor = (size.height * anchorPercentage) / 100;
-				int startPoint = (size.width * startPercentage) / 100;
-				int endPoint = (size.width * finalPercentage) / 100;
-				scroll(startPoint, anchor, endPoint, anchor);
-				LogCapture.info("Able to swap Horizonatlly....");
-			} catch (Exception e) {
-				LogCapture.info("Unable to swipe horizontally");
-				return Constants.KEYWORD_FAIL;
-			}
-			return Constants.KEYWORD_PASS;
+		return Constants.KEYWORD_PASS;
+	}
+
+	public String swipeHorizontal(int startPercentage, int finalPercentage, int anchorPercentage) {
+		try {
+			Dimension size = Constants.driver.manage().window().getSize();
+			int anchor = (size.height * anchorPercentage) / 100;
+			int startPoint = (size.width * startPercentage) / 100;
+			int endPoint = (size.width * finalPercentage) / 100;
+			scroll(startPoint, anchor, endPoint, anchor);
+			LogCapture.info("Able to swap Horizonatlly....");
+		} catch (Exception e) {
+			LogCapture.info("Unable to swipe horizontally");
+			return Constants.KEYWORD_FAIL;
+		}
+		return Constants.KEYWORD_PASS;
+	}
+
+	public String swipeVertical(int startPercentage, int finalPercentage, int anchorPercentage) {
+		try {
+			Dimension size = Constants.driver.manage().window().getSize();
+			int anchor = (size.width * anchorPercentage) / 100;
+			int startPoint = (size.height * startPercentage) / 100;
+			int endPoint = (size.height * finalPercentage) / 100;
+			scroll(anchor, startPoint, anchor, endPoint);
+		} catch (Exception e) {
+			LogCapture.info("Unable to swipe verticallys");
+			return Constants.KEYWORD_FAIL;
 		}
 
-		public String swipeVertical(int startPercentage, int finalPercentage, int anchorPercentage) {
-			try {
-				Dimension size = Constants.driver.manage().window().getSize();
-				int anchor = (size.width * anchorPercentage) / 100;
-				int startPoint = (size.height * startPercentage) / 100;
-				int endPoint = (size.height * finalPercentage) / 100;
-				scroll(anchor, startPoint, anchor, endPoint);
-			} catch (Exception e) {
-				LogCapture.info("Unable to swipe verticallys");
-				return Constants.KEYWORD_FAIL;
-			}
+		return Constants.KEYWORD_PASS;
+	}
 
-			return Constants.KEYWORD_PASS;
+	private void scroll(int startX, int startY, int endX, int endY) {
+		new TouchAction((MobileDriver) Constants.driver).press(point(startX, startY))
+				.waitAction(waitOptions(ofMillis(1000))).moveTo(point(endX, endY)).release().perform();
+	}
+
+	public String activateAppWithoutReset(String packageName) {
+
+		try {
+			Constants.driver.closeApp();
+			Constants.driver.activateApp(Constants.CONFIG.getProperty("AndroidCDAppPackage"));
+
+		} catch (Exception e) {
+			System.out.println("Unable to close and activate app : " + e.getMessage());
+			return Constants.KEYWORD_FAIL;
 		}
-		private void scroll(int startX, int startY, int endX, int endY) {
-			new TouchAction((MobileDriver) Constants.driver).press(point(startX, startY))
-					.waitAction(waitOptions(ofMillis(1000))).moveTo(point(endX, endY)).release().perform();
+
+		return Constants.KEYWORD_PASS;
+	}
+
+	// To check future maintenance and close popup window
+	public void checkCloseFutMaintWindow() throws Exception {
+
+		String CloseFutureMainBtn = Constants.AndroidCDAppLogin.getProperty("CloseFutMaiBtn");
+		String result = Constants.key.click(CloseFutureMainBtn);
+		if (result.equalsIgnoreCase("PASS")) {
+			LogCapture.info("Future maintenancece scheduled window found and closed successfully.......");
+		} else if (result.equalsIgnoreCase("FAIL")) {
+			LogCapture.info("No future maintenance scheduled found.......");
+			takeSnapShot();
 		}
-		public String activateAppWithoutReset(String packageName) {
+	}
 
-			try {
-				Constants.driver.closeApp();
-				Constants.driver.activateApp(Constants.CONFIG.getProperty("AndroidCDAppPackage"));
-
-			} catch (Exception e) {
-				System.out.println("Unable to close and activate app : " + e.getMessage());
-				return Constants.KEYWORD_FAIL;
-			}
-
-			return Constants.KEYWORD_PASS;
-		}
-		// To check future maintenance and close popup window
-		public void checkCloseFutMaintWindow() throws Exception {
-
-			String CloseFutureMainBtn = Constants.AndroidCDAppLogin.getProperty("CloseFutMaiBtn");
-			String result = Constants.key.click(CloseFutureMainBtn);
-			if (result.equalsIgnoreCase("PASS")) {
-				LogCapture.info("Future maintenancece scheduled window found and closed successfully.......");
-			} else if (result.equalsIgnoreCase("FAIL")) {
-				LogCapture.info("No future maintenance scheduled found.......");
-				takeSnapShot();
-			}
-		}	
-		public String VerifyTextContains(String value1, String value2) {
-			if (value1 != null && value2 != null) {
-				if (value1.toLowerCase().contains(value2.toLowerCase())) {
-					return Constants.KEYWORD_PASS;
-				} else {
-					System.out.println("Value1 : " + value1 + " doesnot match with Value2 : " + value2);
-					return Constants.KEYWORD_FAIL;
-				}
-			} else {
-				System.out.println(value1 + "- not contains - " + value2);
-				return Constants.KEYWORD_FAIL;
-			}
-
-		}
-		public String selectList(String object, String data) throws Exception {
-			try {
-				int attempt = 0;
-				Select objSelect = new Select(Constants.driver.findElement(By.xpath(object)));
-				if (!data.equals(Constants.RANDOM_VALUE)) {
-					objSelect.selectByVisibleText(data);
-					takeSnapShot();
-				} else {
-					WebElement droplist = Constants.driver.findElement(By.xpath(object));
-					List<WebElement> droplist_contents = droplist.findElements(By.tagName("option"));
-					Random num = new Random();
-					int index = num.nextInt(droplist_contents.size());
-					String selectedVal = droplist_contents.get(index).getText();
-					objSelect.selectByVisibleText(selectedVal);
-					takeSnapShot();
-				}
-
-			} catch (Exception e) {
-				takeSnapShot();
-				return Constants.KEYWORD_FAIL + "---Could not select from the List---" + e.getMessage();
-
-			}
-			return Constants.KEYWORD_PASS;
-		}
-		public String scrollDownUI(String eleText) throws Exception {
-			try {
-				Constants.androidDriver = ((AndroidDriver<MobileElement>) Constants.driver);
-				Constants.androidDriver.findElementByAndroidUIAutomator(
-						"new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\""
-								+ eleText + "\").instance(0))");
-
-			} catch (Exception e) {
-				System.out.println("Unable to locate : " + e.getMessage());
-				takeSnapShot();
-				return Constants.KEYWORD_FAIL;
-			}
-			return Constants.KEYWORD_PASS;
-		}
-		public String notexist(String object, String data) throws Exception {
-			try {
-				Constants.driver.findElement(By.xpath(object));
-				takeSnapShot();
-			} catch (Exception e) {
-				takeSnapShot();
+	public String VerifyTextContains(String value1, String value2) {
+		if (value1 != null && value2 != null) {
+			if (value1.toLowerCase().contains(value2.toLowerCase())) {
 				return Constants.KEYWORD_PASS;
+			} else {
+				System.out.println("Value1 : " + value1 + " doesnot match with Value2 : " + value2);
+				return Constants.KEYWORD_FAIL;
 			}
-			return Constants.KEYWORD_FAIL + "object exist ";
+		} else {
+			System.out.println(value1 + "- not contains - " + value2);
+			return Constants.KEYWORD_FAIL;
 		}
-		
-		public String scrollToExactElement(String str) throws Exception {
-			try {
-				Thread.sleep(5000);
 
-				((AndroidDriver<MobileElement>) Constants.driver).findElementByAndroidUIAutomator(
-						"new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().text(\""
-								+ str + "\").instance(0))")
-						.click();
-			} catch (Exception e) {
+	}
+
+	public String selectList(String object, String data) throws Exception {
+		try {
+			int attempt = 0;
+			Select objSelect = new Select(Constants.driver.findElement(By.xpath(object)));
+			if (!data.equals(Constants.RANDOM_VALUE)) {
+				objSelect.selectByVisibleText(data);
 				takeSnapShot();
-				return Constants.KEYWORD_FAIL;
+			} else {
+				WebElement droplist = Constants.driver.findElement(By.xpath(object));
+				List<WebElement> droplist_contents = droplist.findElements(By.tagName("option"));
+				Random num = new Random();
+				int index = num.nextInt(droplist_contents.size());
+				String selectedVal = droplist_contents.get(index).getText();
+				objSelect.selectByVisibleText(selectedVal);
+				takeSnapShot();
 			}
-			return Constants.KEYWORD_PASS;
-		}
 
-		public String reInitializeWebDriverWait() {
-			try {
-				Constants.modifyWaitInSeconds = Integer
-						.parseInt(Constants.CONFIG.getProperty("ModifyWaitInSecondsForAndroid"));
-				Constants.wait = new WebDriverWait(Constants.driver, Constants.modifyWaitInSeconds);
-			} catch (Exception e) {
-				System.out.println("Unable to re-intialize wait : " + e.getMessage());
-				return Constants.KEYWORD_FAIL;
-			}
-			return Constants.KEYWORD_PASS;
-		}
-		public String pause(String object, String data) throws NumberFormatException, InterruptedException {
-			long time = (long) Double.parseDouble(object);
-			Thread.sleep(time * 1000L);
-			return Constants.KEYWORD_PASS;
+		} catch (Exception e) {
+			takeSnapShot();
+			return Constants.KEYWORD_FAIL + "---Could not select from the List---" + e.getMessage();
 
 		}
+		return Constants.KEYWORD_PASS;
+	}
+
+	public String scrollDownUI(String eleText) throws Exception {
+		try {
+			Constants.androidDriver = ((AndroidDriver<MobileElement>) Constants.driver);
+			Constants.androidDriver.findElementByAndroidUIAutomator(
+					"new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\""
+							+ eleText + "\").instance(0))");
+
+		} catch (Exception e) {
+			System.out.println("Unable to locate : " + e.getMessage());
+			takeSnapShot();
+			return Constants.KEYWORD_FAIL;
+		}
+		return Constants.KEYWORD_PASS;
+	}
+
+	public String notexist(String object, String data) throws Exception {
+		try {
+			Constants.driver.findElement(By.xpath(object));
+			takeSnapShot();
+		} catch (Exception e) {
+			takeSnapShot();
+			return Constants.KEYWORD_PASS;
+		}
+		return Constants.KEYWORD_FAIL + "object exist ";
+	}
+
+	public String scrollToExactElement(String str) throws Exception {
+		try {
+			Thread.sleep(5000);
+
+			((AndroidDriver<MobileElement>) Constants.driver).findElementByAndroidUIAutomator(
+					"new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().text(\""
+							+ str + "\").instance(0))")
+					.click();
+		} catch (Exception e) {
+			takeSnapShot();
+			return Constants.KEYWORD_FAIL;
+		}
+		return Constants.KEYWORD_PASS;
+	}
+
+	public String reInitializeWebDriverWait() {
+		try {
+			Constants.modifyWaitInSeconds = Integer
+					.parseInt(Constants.CONFIG.getProperty("ModifyWaitInSecondsForAndroid"));
+			Constants.wait = new WebDriverWait(Constants.driver, Constants.modifyWaitInSeconds);
+		} catch (Exception e) {
+			System.out.println("Unable to re-intialize wait : " + e.getMessage());
+			return Constants.KEYWORD_FAIL;
+		}
+		return Constants.KEYWORD_PASS;
+	}
+
+	public String pause(String object, String data) throws NumberFormatException, InterruptedException {
+		long time = (long) Double.parseDouble(object);
+		Thread.sleep(time * 1000L);
+		return Constants.KEYWORD_PASS;
+
+	}
 
 	public String uniqueEmailAddress() throws Exception {
 		try {
@@ -1236,10 +1276,158 @@ public String click(MobileElement element) throws Exception {
 		}
 		return emailID;
 	}
+	// ************** Reusable for jenkins ************
 
+	public String launchAppANDROIDBrowserstack(String bDevice, String bVersion) throws Exception {
+		String username = Constants.CONFIG.getProperty("BS_Username");
+		String accesskey = Constants.CONFIG.getProperty("BS_AccessToken");
+
+		try {
+			LogCapture.info("Android Application setup started on browser stack............");
+			SimpleDateFormat formatDateTime = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+			String DateTime = formatDateTime.format(new Date());
+			SimpleDateFormat formatDayMonth = new SimpleDateFormat("dd MMMM");
+			String DayMonth = formatDayMonth.format(new Date());
+			SimpleDateFormat formatTimeStamp = new SimpleDateFormat("hh:mm:ss");
+			String TimeStamp = formatTimeStamp.format(new Date());
+			if (Constants.CONFIG.getProperty("platformNameAndroid").equalsIgnoreCase("Android")) {
+				// String AndroidDeviceName =
+				// Constants.CONFIG.getProperty("BS_AndroidDevice");
+				// String AndroidDeviceVersion =
+				// Constants.CONFIG.getProperty("BS_AndroidPlatformVersion");
+				// LogCapture.info("Opening "+app+" Application on "+Platform+"
+				// Device "+AndroidDeviceName+" Version "+AndroidDeviceVersion+"
+				// ............");
+				Constants.androidDc = new DesiredCapabilities();
+				Constants.androidDc.setCapability("device", bDevice);
+				Constants.androidDc.setCapability("os_version", bVersion);
+				Constants.androidDc.setCapability("project", "CD Android");
+				Constants.androidDc.setCapability("build", DateTime);
+				Constants.androidDc.setCapability("name", "CD Android");
+				Constants.androidDc.setCapability("unicodeKeyboard", true);
+				Constants.androidDc.setCapability("noReset", true);
+				// Taking app name from config . Early we pass it from stepdef
+				String app = Constants.CONFIG.getProperty("CDApp");
+				if (app.equalsIgnoreCase("CD")) {
+					// Browserstack app path
+					LogCapture.info("Installing " + app + " Application............");
+					Constants.androidDc.setCapability(MobileCapabilityType.APP,
+							"bs://" + Constants.CONFIG.getProperty("BS_AndroidCDAppVersion"));
+				} else if (app.equalsIgnoreCase("TorFX")) {
+					LogCapture.info("Installing " + app + " Application............");
+					Constants.androidDc.setCapability(MobileCapabilityType.APP,
+							"bs://" + Constants.CONFIG.getProperty("BS_AndroidTorFXAppVersion"));
+				}
+				Constants.driver = new AndroidDriver<MobileElement>(
+						new URL("https://" + username + ":" + accesskey + "@hub-cloud.browserstack.com/wd/hub"),
+						Constants.androidDc);
+				Constants.waitInSeconds = Integer.parseInt(Constants.CONFIG.getProperty("WaitInSecondsForIOS"));
+				Constants.wait = new WebDriverWait(Constants.driver, Constants.waitInSeconds);
+				takeSnapShot();
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			LogCapture.info(
+					"Installation or launching app process failed...Please check provided configuration details.........!!!!");
+			return Constants.KEYWORD_FAIL;
+		}
+		return Constants.KEYWORD_PASS;
+	}
+
+	public String launchAppIOSBrowserstack(String bDevice, String bVersion) throws Exception {
+		String username = Constants.CONFIG.getProperty("BS_Username");
+		String accesskey = Constants.CONFIG.getProperty("BS_AccessToken");
+		try {
+			if (Constants.CONFIG.getProperty("platformNameIOS").equalsIgnoreCase("iOS")) {
+				String app = Constants.CONFIG.getProperty("CDApp");
+				// String iOSDeviceName =
+				// Constants.CONFIG.getProperty("BS_iOSDevice");
+				// String iOSDeviceVersion =
+				// Constants.CONFIG.getProperty("BS_iOSPlatformVersion");
+				// LogCapture.info("Opening " + app + " Application on " +
+				// Platform + " Device " + iOSDeviceName
+				// + " Version " + iOSDeviceVersion + " ............");
+				Constants.IOSDC = new DesiredCapabilities();
+				Constants.IOSDC.setCapability("device", bDevice);
+				Constants.IOSDC.setCapability("os_version", bVersion);
+				Constants.IOSDC.setCapability("project", "CD iOS");
+				// Constants.TagNames);
+				// Constants.IOSDC.setCapability("browserstack.debug", "true");
+				// Constants.IOSDC.setCapability("build", "iOS _" + DayMonth);
+				// Constants.androidDc.setCapability("name", TimeStamp + " - "+
+				// Constants.TagNames);
+				// Constants.IOSDC.setCapability("build", DateTime);
+				Constants.IOSDC.setCapability("name", "CD iOS");
+
+				if (app.equalsIgnoreCase("CD")) {
+					// Browserstack app path
+					// Constants.IOSDC.setCapability(MobileCapabilityType.APP,
+					// Constants.BrowserCONFIG.getProperty("AppVersion"));
+					LogCapture.info("Installing " + app + " Application............");
+					Constants.IOSDC.setCapability(MobileCapabilityType.APP,
+							"bs://" + Constants.CONFIG.getProperty("BS_iOSCDAppVersion"));
+
+				} else if (app.equalsIgnoreCase("TorFX")) {
+					LogCapture.info("Installing " + app + " Application............");
+					Constants.IOSDC.setCapability(MobileCapabilityType.APP,
+							"bs://" + Constants.CONFIG.getProperty("BS_iOSTorFXAppVersion"));
+				}
+				Constants.driver = new IOSDriver<MobileElement>(
+						new URL("https://" + username + ":" + accesskey + "@hub-cloud.browserstack.com/wd/hub"),
+						Constants.IOSDC);
+				// Webdriver wait implementation
+				Constants.waitInSeconds = Integer.parseInt(Constants.CONFIG.getProperty("WaitInSecondsForIOS"));
+				Constants.wait = new WebDriverWait(Constants.driver, Constants.waitInSeconds);
+				takeSnapShot();
+
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			LogCapture.info(
+					"Installation or launching app process failed...Please check provided configuration details.........!!!!");
+			return Constants.KEYWORD_FAIL;
+		}
+		return Constants.KEYWORD_PASS;
+	}
+
+	// Same method like existing android launch app on local device
+	public String launchAppUsingDeviceId(String device) throws Exception {
+		try {
+			// Writing logs in log file
+			LogCapture.info("Application setup started............");
+			// Checking platform for setting up desired capabilities
+			if (Constants.CONFIG.getProperty("platformNameAndroid").equalsIgnoreCase("Android")) {
+				// Reading properties file and setting up desired capabilities
+				// for android platform
+				Constants.androidDc = new DesiredCapabilities();
+				// Constants.AndroidDC.setCapability(MobileCapabilityType.DEVICE_NAME,Constants.CONFIG.getProperty("deviceName"));
+				Constants.androidDc.setCapability(MobileCapabilityType.UDID, device);
+				Constants.androidDc.setCapability(MobileCapabilityType.PLATFORM_VERSION,
+						Constants.CONFIG.getProperty("platformVersion"));
+				Constants.androidDc.setCapability("skipUnlock", "true");
+				Constants.androidDc.setCapability("appPackage", Constants.CONFIG.getProperty("appPackage"));
+				Constants.androidDc.setCapability("appActivity", Constants.CONFIG.getProperty("appActivity"));
+				Constants.androidDc.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 90000);
+				Constants.androidDc.setCapability(MobileCapabilityType.NO_RESET, "false");
+				Constants.appiumServerUrl = Constants.CONFIG.getProperty("appiumServerUrl");
+
+				// creating android driver instance
+				Constants.driver = new AndroidDriver<MobileElement>(new URL(Constants.appiumServerUrl),
+						Constants.androidDc);
+				// WebdriverWait implementation
+				int waitInSeconds = Integer.parseInt(Constants.CONFIG.getProperty("waitInSeconds"));
+				System.out.println(waitInSeconds);
+				Constants.wait = new WebDriverWait(Constants.driver, waitInSeconds);
+				takeSnapShot();
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			LogCapture.info(
+					"Installation or launching app process failed...Please check provided configuration details.........!!!!");
+			return Constants.KEYWORD_FAIL;
+		}
+		return Constants.KEYWORD_PASS;
+
+	}
 
 }
-	
-		
-	
-

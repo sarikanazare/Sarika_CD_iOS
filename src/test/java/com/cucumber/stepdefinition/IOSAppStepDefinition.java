@@ -31,28 +31,50 @@ public class IOSAppStepDefinition {
 	double iOSPlatformVersion;
 	String useremaild;
 
-	/*
-	 * @Given("^ios user installed the new app \"([^\"]*)\" on the device \"([^\"]*)\" and launched successfully$"
-	 * ) public void
-	 * ios_user_installed_the_new_app_on_the_device_and_launched_successfully(String
-	 * data1, String data2) throws Throwable { String vIosAppVersion =
-	 * Constants.CONFIG.getProperty(data1); String vDeviceUdId =
-	 * Constants.CONFIG.getProperty(data2); Assert.assertEquals("PASS",
-	 * Constants.key.launchApp(vDeviceUdId, vIosAppVersion)); String
-	 * vIOSPlatformVersion = Constants.CONFIG.getProperty("IOSPlatformVersion");
-	 * iOSPlatformVersion = Double.parseDouble(vIOSPlatformVersion);
-	 * LogCapture.info("Application installed and launched successfully......!!!!");
-	 * }
-	 */
 	@Given("^(ios) user installed the new (CD|TorFX) app and launched successfully$")
 	public void ios_user_installed_the_new_CD_app_and_launched_successfully(String Platform, String optionalValue)
 			throws Throwable {
-		//Assert.assertEquals("PASS", Constants.key.launchApp(optionalValue));
+
+		if (Constants.CONFIG.getProperty("isLocalJenkins").equals("true")) {
+			Assert.assertEquals("PASS", Constants.key.launchApp(optionalValue));
+			LogCapture.info("IOS CD Application installed and launched successfully...");
+		} else if (Constants.CONFIG.getProperty("isBrowserstackJenkins").equals("true")) {
+			Thread.sleep(10000);
+
+			String vDeviceID = Constants.CONFIG.getProperty("bIOSDevice");
+			LogCapture.info("CD iOS Application is launching on  device " + vDeviceID + "....");
+			try {
+				if (!Constants.JenkinsBrowser.isEmpty() || !Constants.JenkinsBrowser.equals("")) {
+					vDeviceID = Constants.JenkinsBrowser;
+					LogCapture.info("Device ID is :" + vDeviceID);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			String vVersion = Constants.CONFIG.getProperty("bIOSVersion");
+			LogCapture.info("CD Application is launching on  device version " + vVersion + "....");
+			try {
+				if (!Constants.BrowserStack.isEmpty() || !Constants.BrowserStack.equals("")) {
+					vVersion = Constants.BrowserStack;
+					LogCapture.info("Device Version is :" + vVersion);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			String rep = vDeviceID.replaceAll("-", " ");
+			Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.launchAppIOSBrowserstack(rep, vVersion));
+			LogCapture.info("CD iOS Application installed and launched successfully......!!!!");
+		}
+
+		// Assert.assertEquals("PASS", Constants.key.launchApp(optionalValue));
 		// Constants.key.getAPIAppLink();
 		// Constants.key.postAPIAppVersion();
-		Assert.assertEquals("PASS",Constants.key.launchAppOnBrowserStack(Platform,optionalValue));
-		String vIOSPlatformVersion = Constants.CONFIG.getProperty("Loc_IOSPlatformVersion");
-		iOSPlatformVersion = Double.parseDouble(vIOSPlatformVersion);
+		 //Assert.assertEquals("PASS",
+		//Constants.key.launchAppOnBrowserStack(Platform, optionalValue));
+		//String vIOSPlatformVersion = Constants.CONFIG.getProperty("Loc_IOSPlatformVersion");
+		//iOSPlatformVersion = Double.parseDouble(vIOSPlatformVersion);
 		AppName = optionalValue;
 		LogCapture.info(optionalValue + " Application installed and launched successfully......!!!!");
 	}
@@ -75,10 +97,11 @@ public class IOSAppStepDefinition {
 	}
 
 	/*
-	 * @When("^ios pinned user reinstall and launch the application$") public void
-	 * ios_pinned_user_reinstall_and_launch_the_application() throws Throwable {
-	 * Assert.assertEquals("PASS", Constants.key.launchApp("Version 3.0 (120)"));
-	 * LogCapture.info("Application installed and launched successfully......!!!!");
+	 * @When("^ios pinned user reinstall and launch the application$") public
+	 * void ios_pinned_user_reinstall_and_launch_the_application() throws
+	 * Throwable { Assert.assertEquals("PASS",
+	 * Constants.key.launchApp("Version 3.0 (120)")); LogCapture.
+	 * info("Application installed and launched successfully......!!!!");
 	 * 
 	 * }
 	 */
@@ -86,7 +109,8 @@ public class IOSAppStepDefinition {
 	@When("^(ios) pinned user reinstall and launch the (CD|TorFX) app in ios app$")
 	public void ios_pinned_user_reinstall_and_launch_the_CD_app_in_ios_app(String Platform, String optionalValue)
 			throws Throwable {
-		// Assert.assertEquals("PASS", Constants.key.launchApp("Version 3.0 (120)"));
+		// Assert.assertEquals("PASS", Constants.key.launchApp("Version 3.0
+		// (120)"));
 		Assert.assertEquals("PASS", Constants.key.launchAppOnBrowserStack(Platform, optionalValue));
 		LogCapture.info("Application installed and launched successfully......!!!!");
 	}
@@ -108,17 +132,19 @@ public class IOSAppStepDefinition {
 	public void ios_app_scheduled_maintenance_has_been_checked() throws Throwable {
 		/*
 		 * String vobjCloseFutMainBtn =
-		 * Constants.IOSLoginOR.getProperty("CloseFutMaiBtn"); //Temporary reinitialize
-		 * wait with lower time to improve performance on this step
-		 * Constants.waitInSeconds = Integer.parseInt(Constants.CONFIG.getProperty(
+		 * Constants.IOSLoginOR.getProperty("CloseFutMaiBtn"); //Temporary
+		 * reinitialize wait with lower time to improve performance on this step
+		 * Constants.waitInSeconds =
+		 * Integer.parseInt(Constants.CONFIG.getProperty(
 		 * "ModifyWaitInSecondsForIOS"));
 		 * Constants.key.reInitializeWebDriverWait(Constants.waitInSeconds);
 		 * 
 		 * String result = Constants.key.click(vobjCloseFutMainBtn); if
 		 * (result.equalsIgnoreCase("PASS")) { LogCapture.
-		 * info("Future maintenance scheduler found and closed successfully......." ); }
-		 * else{ LogCapture.info("No future maintenance scheduler found......."); } //To
-		 * initialize wait with original value Constants.wait = new
+		 * info("Future maintenance scheduler found and closed successfully......."
+		 * ); } else{
+		 * LogCapture.info("No future maintenance scheduler found......."); }
+		 * //To initialize wait with original value Constants.wait = new
 		 * WebDriverWait(Constants.driver, Constants.waitInSeconds);
 		 */
 
@@ -171,19 +197,22 @@ public class IOSAppStepDefinition {
 		 * vObjResetBtn = Constants.IOSLoginOR.getProperty("ResetBtn"); String
 		 * vObjEmailInput = Constants.IOSLoginOR.getProperty("EmailInput");
 		 * 
-		 * //Temporary reinitialize wait with lower time to improve performance on this
-		 * step Constants.modifyWaitInSeconds =
-		 * Integer.parseInt(Constants.CONFIG.getProperty( "ModifyWaitInSecondsForIOS"));
-		 * Constants.key.reInitializeWebDriverWait(Constants.modifyWaitInSeconds );
-		 * //ios_app_scheduled_maintenance_has_been_checked();
+		 * //Temporary reinitialize wait with lower time to improve performance
+		 * on this step Constants.modifyWaitInSeconds =
+		 * Integer.parseInt(Constants.CONFIG.getProperty(
+		 * "ModifyWaitInSecondsForIOS"));
+		 * Constants.key.reInitializeWebDriverWait(Constants.modifyWaitInSeconds
+		 * ); //ios_app_scheduled_maintenance_has_been_checked();
 		 * Constants.key.click(vObjCancelBiometric);
 		 * 
-		 * Constants.key.eleLocatedDisplayed(vObjLoginWithAnotherAcBtn); String result =
+		 * Constants.key.eleLocatedDisplayed(vObjLoginWithAnotherAcBtn); String
+		 * result =
 		 * Constants.key.eleLocatedDisplayed(vObjLoginWithAnotherAcBtn);
 		 * //System.out.println("Result : "+result);
 		 * 
 		 * if (result.equalsIgnoreCase("PASS")) {
-		 * Assert.assertEquals("PASS",Constants.key.click( vObjLoginWithAnotherAcBtn));
+		 * Assert.assertEquals("PASS",Constants.key.click(
+		 * vObjLoginWithAnotherAcBtn));
 		 * //Assert.assertEquals("PASS",Constants.key.click(
 		 * vObjLoginWithAnotherAcBtn));
 		 * Assert.assertEquals("PASS",Constants.key.click(vObjResetBtn));
@@ -192,9 +221,10 @@ public class IOSAppStepDefinition {
 		 * info("User unpinned from the app and application relaunched successfully......."
 		 * ); } else { LogCapture.info("Pinned user not found...... ");
 		 * 
-		 * //To initialize wait with original value Constants.modifyWaitInSeconds =
-		 * Integer.parseInt(Constants.CONFIG.getProperty("WaitInSecondsForIOS")) ;
-		 * Constants.wait = new WebDriverWait(Constants.driver,
+		 * //To initialize wait with original value
+		 * Constants.modifyWaitInSeconds =
+		 * Integer.parseInt(Constants.CONFIG.getProperty("WaitInSecondsForIOS"))
+		 * ; Constants.wait = new WebDriverWait(Constants.driver,
 		 * Constants.waitInSeconds); // To check onboard screen displayed }
 		 */
 		Assert.assertEquals("PASS", Constants.key.eleLocatedDisplayed(vObjOnboardsignUpBtn));
@@ -322,6 +352,7 @@ public class IOSAppStepDefinition {
 
 			if (vObjEnv.equalsIgnoreCase("UAT")) {
 				ios_user_enters_valid_otp_to_add_recipient(useremaild, "first time login");
+				// ios_user_enters_invalid_otp("54321", "valid");
 			}
 
 			else {
@@ -332,9 +363,9 @@ public class IOSAppStepDefinition {
 	} /*
 		 * else {
 		 * 
-		 * if
-		 * (!Constants.key.eleLocatedDisplayed(vObjDashContBtn2).equalsIgnoreCase("PASS"
-		 * )) { ios_user_enters_valid_otp_to_add_recipient("first time login",
+		 * if (!Constants.key.eleLocatedDisplayed(vObjDashContBtn2).
+		 * equalsIgnoreCase("PASS" )) {
+		 * ios_user_enters_valid_otp_to_add_recipient("first time login",
 		 * useremaild); } } }
 		 */
 
@@ -350,7 +381,8 @@ public class IOSAppStepDefinition {
 
 		} else if (optionalValue.equalsIgnoreCase("done")) {
 
-			// String vObjDoneBtn = Constants.IOSSendMoneyOR.getProperty("DoneBtn");
+			// String vObjDoneBtn =
+			// Constants.IOSSendMoneyOR.getProperty("DoneBtn");
 
 			String vObjDoneBtn = Constants.IOSAddWalletOR.getProperty("DoneBtn");
 			String vObjSitDoneBtn = Constants.IOSAddWalletOR.getProperty("SitDoneBtn");
@@ -656,8 +688,9 @@ public class IOSAppStepDefinition {
 
 	/*
 	 * @When("^ios user relaunches the app$") public void
-	 * ios_user_relaunches_the_app() throws Throwable { Assert.assertEquals("PASS",
-	 * Constants.key.LaunchExistingIOSApp()); LogCapture.
+	 * ios_user_relaunches_the_app() throws Throwable {
+	 * Assert.assertEquals("PASS", Constants.key.LaunchExistingIOSApp());
+	 * LogCapture.
 	 * info("Application has been relaunched without clearing previous data........."
 	 * ); }
 	 */
@@ -735,7 +768,7 @@ public class IOSAppStepDefinition {
 		Assert.assertEquals("PASS", Constants.key.eleLocatedDisplayed(vObjForgotPassCloseBtn));
 		String atbValue = Constants.key.getAttributeValue(vObjForgotPassCloseBtn, "enabled").toString();
 		Assert.assertEquals("PASS", Constants.key.VerifyText("true", atbValue));
-		// Assert.assertEquals("PASS",Constants.key.eleLocatedDisplayed(vObjForgotPassClose));
+		// Assert.assertEquals(Constants.KEYWORD_PASS,Constants.key.eleLocatedDisplayed(vObjForgotPassClose));
 		String vObjForgotEmailInput = Constants.IOSLoginOR.getProperty("ForgotEmailInput");
 		Assert.assertEquals("PASS", Constants.key.eleLocatedDisplayed(vObjForgotEmailInput));
 		LogCapture.info("User navigated to forgot password screen successfully.......");
@@ -1043,7 +1076,8 @@ public class IOSAppStepDefinition {
 
 	@Then("^ios app should not request for the biometric credentials to login$")
 	public void ios_app_should_not_request_for_the_biometric_credentials_to_login() throws Throwable {
-		// Temporary reinitialize wait with lower time to improve performance on this
+		// Temporary reinitialize wait with lower time to improve performance on
+		// this
 		// step
 		Constants.modifyWaitInSeconds = Integer.parseInt(Constants.CONFIG.getProperty("ModifyWaitInSecondsForIOS"));
 		Constants.key.reInitializeWebDriverWait(Constants.modifyWaitInSeconds);
@@ -1571,23 +1605,41 @@ public class IOSAppStepDefinition {
 
 	}
 
-	@When("^ios user enters invalid otp \"([^\"]*)\"$")
-	public void ios_user_enters_invalid_otp(String invalidOTP) throws Throwable {
-		String vInvalidOTP = Constants.IOSTestData.getProperty("InvalidOTP");
-		String vObjFirstPinInput = Constants.IOSLoginOR.getProperty("FirstPinInput");
-		String vObjSecondPinInput = Constants.IOSLoginOR.getProperty("SecondPinInput");
-		String vObjThirdPinInput = Constants.IOSLoginOR.getProperty("ThirdPinInput");
-		String vObjFourthPinInput = Constants.IOSLoginOR.getProperty("FourthPinInput");
-		String vObjFifthPinInput = Constants.IOSLoginOR.getProperty("FifthPinInput");
-		String vObjDoneBtn = Constants.IOSLoginOR.getProperty("DoneBtn");
+	@When("^ios user enters (valid|invalid) otp \"([^\"]*)\"$")
+	public void ios_user_enters_invalid_otp(String invalidOTP, String optionalValue) throws Throwable {
+		if (optionalValue.equalsIgnoreCase("valid")) {
+			String vInvalidOTP = Constants.IOSTestData.getProperty("InvalidOTP");
+			String vObjFirstPinInput = Constants.IOSLoginOR.getProperty("FirstPinInput");
+			String vObjSecondPinInput = Constants.IOSLoginOR.getProperty("SecondPinInput");
+			String vObjThirdPinInput = Constants.IOSLoginOR.getProperty("ThirdPinInput");
+			String vObjFourthPinInput = Constants.IOSLoginOR.getProperty("FourthPinInput");
+			String vObjFifthPinInput = Constants.IOSLoginOR.getProperty("FifthPinInput");
+			String vObjDoneBtn = Constants.IOSLoginOR.getProperty("DoneBtn");
+			// 54321
+			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFirstPinInput, vInvalidOTP.substring(4, 5)));
+			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjSecondPinInput, vInvalidOTP.substring(3, 4)));
+			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjThirdPinInput, vInvalidOTP.substring(2, 3)));
+			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFourthPinInput, vInvalidOTP.substring(1, 2)));
+			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFifthPinInput, vInvalidOTP.substring(0, 1)));
+			Assert.assertEquals("PASS", Constants.key.click(vObjDoneBtn));
+			LogCapture.info("User has entered valid otp.........");
+		}
+		if (optionalValue.equalsIgnoreCase("invalid")) {
+			String vInvalidOTP = Constants.IOSTestData.getProperty("InvalidOTP");
+			String vObjFirstPinInput = Constants.IOSLoginOR.getProperty("FirstPinInput");
+			String vObjSecondPinInput = Constants.IOSLoginOR.getProperty("SecondPinInput");
+			String vObjThirdPinInput = Constants.IOSLoginOR.getProperty("ThirdPinInput");
+			String vObjFourthPinInput = Constants.IOSLoginOR.getProperty("FourthPinInput");
+			String vObjFifthPinInput = Constants.IOSLoginOR.getProperty("FifthPinInput");
+			String vObjDoneBtn = Constants.IOSLoginOR.getProperty("DoneBtn");
 
-		Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFirstPinInput, vInvalidOTP.substring(0, 1)));
-		Assert.assertEquals("PASS", Constants.key.writeInInput(vObjSecondPinInput, vInvalidOTP.substring(1, 2)));
-		Assert.assertEquals("PASS", Constants.key.writeInInput(vObjThirdPinInput, vInvalidOTP.substring(2, 3)));
-		Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFourthPinInput, vInvalidOTP.substring(3, 4)));
-		Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFifthPinInput, vInvalidOTP.substring(4, 5)));
-		Assert.assertEquals("PASS", Constants.key.click(vObjDoneBtn));
-		LogCapture.info("User has entered invalid otp.........");
+			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFirstPinInput, vInvalidOTP.substring(0, 1)));
+			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjSecondPinInput, vInvalidOTP.substring(1, 2)));
+			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjThirdPinInput, vInvalidOTP.substring(2, 3)));
+			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFourthPinInput, vInvalidOTP.substring(3, 4)));
+			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFifthPinInput, vInvalidOTP.substring(4, 5)));
+			LogCapture.info("User has entered invalid otp.........");
+		}
 	}
 
 	@Then("^invalid otp error message should be displayed$")
@@ -1666,17 +1718,17 @@ public class IOSAppStepDefinition {
 		String vObjFourthPinInput = Constants.IOSLoginOR.getProperty("FourthPinInput");
 		String vObjFifthPinInput = Constants.IOSLoginOR.getProperty("FifthPinInput");
 		String vObjDoneBtn = Constants.IOSLoginOR.getProperty("DoneBtn");
-		Assert.assertEquals("PASS",
+		Assert.assertEquals(Constants.KEYWORD_PASS,
 				Constants.key.writeInInput(vObjFirstPinInput, vValidOTP.substring(0, 1)));
-		Assert.assertEquals("PASS",
+		Assert.assertEquals(Constants.KEYWORD_PASS,
 				Constants.key.writeInInput(vObjSecondPinInput, vValidOTP.substring(1, 2)));
-		Assert.assertEquals("PASS",
+		Assert.assertEquals(Constants.KEYWORD_PASS,
 				Constants.key.writeInInput(vObjThirdPinInput, vValidOTP.substring(2, 3)));
-		Assert.assertEquals("PASS",
+		Assert.assertEquals(Constants.KEYWORD_PASS,
 				Constants.key.writeInInput(vObjFourthPinInput, vValidOTP.substring(3, 4)));
-		Assert.assertEquals("PASS",
+		Assert.assertEquals(Constants.KEYWORD_PASS,
 				Constants.key.writeInInput(vObjFifthPinInput, vValidOTP.substring(4, 5)));
-		Assert.assertEquals("PASS", Constants.key.click(vObjDoneBtn));
+		Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.click(vObjDoneBtn));
 		LogCapture.info("User has entered valid otp.........");
 	}
 
@@ -1713,7 +1765,10 @@ public class IOSAppStepDefinition {
 	@When("^ios user is logged into the app with Username \"([^\"]*)\" and Password \"([^\"]*)\"$")
 	public void ios_user_is_logged_into_the_app_with_Username_and_Password(String username, String password)
 			throws Throwable {
-		ios_user_provides_Username_and_Password(username, password); // why login like this
+		ios_user_provides_Username_and_Password(username, password); // why
+																		// login
+																		// like
+																		// this
 		ios_user_click_on_the_login_button();
 		ios_user_skip_the_biometric_credentials_for_the_app();
 		ios_app_should_load_the_dashboard_screen();
@@ -2074,12 +2129,14 @@ public class IOSAppStepDefinition {
 		String result = "FAIL";
 		int eleListSize = Constants.key.getElementList(vObjAddNewCard).size();
 		// Assert.assertEquals("PASS",
-		// Constants.key.eleLocatedDisplayed(vObjTypeOtherTag + "[" + eleListSize + "]"
+		// Constants.key.eleLocatedDisplayed(vObjTypeOtherTag + "[" +
+		// eleListSize + "]"
 		// + vObjAddNewCard));
 		int noOfDebitCard = Constants.key.getElementList(vObjDDCardNoLblPart1 + vObjDDCardNoLblPart2).size();
 
 		if (noOfDebitCard > 5) {
-			// Assert.assertEquals("PASS", Constants.key.scrollInIOS("Add debit card",
+			// Assert.assertEquals("PASS", Constants.key.scrollInIOS("Add debit
+			// card",
 			// "down"));
 			Assert.assertEquals("PASS", Constants.key.scrollInIOS("Add debit card", "up"));
 		}
@@ -2138,7 +2195,8 @@ public class IOSAppStepDefinition {
 		int eleListSize = Constants.key.getElementList(vObjAddNewCard).size();
 
 		// Assert.assertEquals("PASS",
-		// Constants.key.eleLocatedDisplayed(vObjTypeOtherTag + "[" + eleListSize + "]"
+		// Constants.key.eleLocatedDisplayed(vObjTypeOtherTag + "[" +
+		// eleListSize + "]"
 		// + vObjAddNewCard));
 		int noOfDebitCard = Constants.key.getElementList(vObjDDCardNoLblPart1 + vObjDDCardNoLblPart2).size();
 
@@ -2169,31 +2227,34 @@ public class IOSAppStepDefinition {
 	 * Constants.IOSSendMoneyOR.getProperty("DDCardNoLblPart1_PM"); String
 	 * vObjDDCardNoLblPart2 =
 	 * Constants.IOSSendMoneyOR.getProperty("DDCardNoLblPart2_PM"); String
-	 * vObjAddNewCard = Constants.IOSSendMoneyOR.getProperty("AddNewCard2"); String
-	 * vObjDDCardRadioBtn = Constants.IOSSendMoneyOR.getProperty("DDCardRadioBtn");
-	 * String result = "FAIL"; int
+	 * vObjAddNewCard = Constants.IOSSendMoneyOR.getProperty("AddNewCard2");
+	 * String vObjDDCardRadioBtn =
+	 * Constants.IOSSendMoneyOR.getProperty("DDCardRadioBtn"); String result =
+	 * "FAIL"; int
 	 * noOfDebitCard=Constants.key.getElementList(vObjDDCardNoLblPart1+
 	 * vObjDDCardNoLblPart2).size();
-	 * System.out.println("noOfDebitCard :"+noOfDebitCard); if(noOfDebitCard==0) {
-	 * noOfDebitCard=1; } else if(noOfDebitCard%2==0) {
-	 * noOfDebitCard=noOfDebitCard/2; } else { noOfDebitCard=(noOfDebitCard)/2+1; }
-	 * if (noOfDebitCard > 5) { Assert.assertEquals("PASS",
-	 * Constants.key.scrollInIOS("Add debit card", "down")); }
-	 * Assert.assertEquals("PASS", Constants.key.scrollInIOS("debit card", "up"));
-	 * for (int i = 1; i < noOfDebitCard; i++) { if (i == 5) {
-	 * Assert.assertEquals("PASS", Constants.key.scrollInIOS("Add new card",
-	 * "down")); Assert.assertEquals("PASS",Constants.key.eleLocatedDisplayed(
+	 * System.out.println("noOfDebitCard :"+noOfDebitCard); if(noOfDebitCard==0)
+	 * { noOfDebitCard=1; } else if(noOfDebitCard%2==0) {
+	 * noOfDebitCard=noOfDebitCard/2; } else {
+	 * noOfDebitCard=(noOfDebitCard)/2+1; } if (noOfDebitCard > 5) {
+	 * Assert.assertEquals("PASS", Constants.key.scrollInIOS("Add debit card",
+	 * "down")); } Assert.assertEquals("PASS",
+	 * Constants.key.scrollInIOS("debit card", "up")); for (int i = 1; i <
+	 * noOfDebitCard; i++) { if (i == 5) { Assert.assertEquals("PASS",
+	 * Constants.key.scrollInIOS("Add new card", "down"));
+	 * Assert.assertEquals("PASS",Constants.key.eleLocatedDisplayed(
 	 * vObjAddNewCard)); }
 	 * 
-	 * String cardNumber = Constants.key.getAttributeValue(vObjDDCardNoLblPart1 +
-	 * "[" + i + "]" + vObjDDCardNoLblPart2,"value");
+	 * String cardNumber = Constants.key.getAttributeValue(vObjDDCardNoLblPart1
+	 * + "[" + i + "]" + vObjDDCardNoLblPart2,"value");
 	 * System.out.println("CARD NO... : "+cardNumber); String cardLast4Digit =
 	 * cardNumber.substring((cardNumber.length() - 4), (cardNumber.length()));
 	 * String vCardLast4Digit = data.substring((data.length() - 4),
 	 * (data.length()));
 	 * 
 	 * if (cardLast4Digit.equalsIgnoreCase(vCardLast4Digit)) {
-	 * System.out.println(vObjDDCardNoLblPart1 + "[" + i + "]"+vObjDDCardRadioBtn);
+	 * System.out.println(vObjDDCardNoLblPart1 + "[" + i +
+	 * "]"+vObjDDCardRadioBtn);
 	 * Assert.assertEquals("PASS",Constants.key.clickWithoutVisibilityChk(
 	 * vObjDDCardNoLblPart1 + "[" + i + "]"+vObjDDCardRadioBtn));
 	 * //Constants.key.click(vObjDDCardNoLblPart1 + "[" + i +
@@ -2788,7 +2849,8 @@ public class IOSAppStepDefinition {
 		String vObjCountryDD = Constants.IOSMyCardOR.getProperty("CountryDD");
 		String vObjCountrySearchInput = Constants.IOSMyCardOR.getProperty("CountrySearchInput");
 		String vObjCountryCell = Constants.IOSMyCardOR.getProperty("CountryCell");
-		// String vObjCountryLabel = Constants.IOSMyCardOR.getProperty("CountryLabel");
+		// String vObjCountryLabel =
+		// Constants.IOSMyCardOR.getProperty("CountryLabel");
 		String vObjCountryLabel = Constants.IOSMyCardOR.getProperty("CountryLabel2");
 		Assert.assertEquals("PASS", Constants.key.click(vObjCountryDD));
 		Assert.assertEquals("PASS", Constants.key.writeInInput(vObjCountrySearchInput, country));
@@ -2853,7 +2915,8 @@ public class IOSAppStepDefinition {
 			// Constants.IOSMyCardOR.getProperty("PostCodePHolder");
 			String vObjPostCodePHolder = Constants.IOSRegstOR.getProperty("PostCodePHolder");
 			String vObjPostCodeInput = Constants.IOSMyCardOR.getProperty("PostCodeAll");
-			// String vObjPostCodeInput = Constants.IOSRegstOR.getProperty("PostCodeInput");
+			// String vObjPostCodeInput =
+			// Constants.IOSRegstOR.getProperty("PostCodeInput");
 
 			// Street line1
 			Assert.assertEquals("PASS", Constants.key.click(vObjAddLine1PHolder));
@@ -3514,13 +3577,15 @@ public class IOSAppStepDefinition {
 		if (Constants.DataMap.containsKey("RecipientBankCodeType")) {
 			if (Constants.DataMap.get("RecipientBankCodeType").equalsIgnoreCase("IBAN")) {
 				accountNo = Constants.DataMap.get("RecipientBankCode");
-				// String bankcodetype = Constants.DataMap.get("RecipientBankCodeType");
+				// String bankcodetype =
+				// Constants.DataMap.get("RecipientBankCodeType");
 				// String bankcode = Constants.DataMap.get("RecipientBankCode");
 
 			}
 		} else {
 			accountNo = Constants.DataMap.get("RecipientAccountNo").toString();
-			// String bankcodetype=Constants.DataMap.get("RecipientBankCodeType");
+			// String
+			// bankcodetype=Constants.DataMap.get("RecipientBankCodeType");
 			// String bankcode=Constants.DataMap.get("RecipientBankCode");
 		}
 		accountNo = Constants.DataMap.get("RecipientAccountNo").toString();
@@ -3578,7 +3643,8 @@ public class IOSAppStepDefinition {
 		Assert.assertEquals("PASS", Constants.key.eleLocatedDisplayed(vObjDeleteConfTitle));
 		String vDeleteConfMsg = Constants.key.getAttributeValue(vObjDeleteConfMsg, "value");
 		Assert.assertEquals("PASS",
-				// Constants.key.VerifyText("Are you sure you want to delete your recipient?",
+				// Constants.key.VerifyText("Are you sure you want to delete
+				// your recipient?",
 				// vDeleteConfMsg));
 				Constants.key.VerifyText("Are you sure you want to delete this recipient?", vDeleteConfMsg));
 		LogCapture.info("Delete confirmation window displayed.......................");
@@ -3608,13 +3674,14 @@ public class IOSAppStepDefinition {
 		Assert.assertEquals("PASS", Constants.key.eleLocatedDisplayed(vObjRecipientTitle));
 		Constants.key.eleLocatedDisplayed(vObjBtnAddRecipientCell);
 		/*
-		 * int recpientListSize = Constants.key.getElementList(vObjRecpientList).size();
-		 * if (recpientListSize > 0) {
+		 * int recpientListSize =
+		 * Constants.key.getElementList(vObjRecpientList).size(); if
+		 * (recpientListSize > 0) {
 		 * Constants.key.eleLocatedDisplayed(vObjBtnAddRecipientCell);
 		 * Assert.assertEquals("PASS",
 		 * Constants.key.eleLocatedDisplayed(vObjBtnAddRecipientCell));
-		 * LogCapture.info("User navigated to recipient list screen..... "); } else {
-		 * Assert.assertEquals("PASS",
+		 * LogCapture.info("User navigated to recipient list screen..... "); }
+		 * else { Assert.assertEquals("PASS",
 		 * Constants.key.eleLocatedDisplayed(vObjBtnAddRecipient));
 		 * LogCapture.info("User navigated to recipient list screen..... "); }
 		 */
@@ -3677,11 +3744,10 @@ public class IOSAppStepDefinition {
 	/*
 	 * @Given("^ios older version app is installed on the device and launched successfully$"
 	 * ) public void
-	 * ios_older_version_app_is_installed_on_the_device_and_launched_successfully()
-	 * throws Throwable { Assert.assertEquals("PASS",
-	 * Constants.key.launchApp("Version 1.0 (22)"));
-	 * LogCapture.info("Application installed and launched successfully......!!!!");
-	 * }
+	 * ios_older_version_app_is_installed_on_the_device_and_launched_successfully
+	 * () throws Throwable { Assert.assertEquals("PASS",
+	 * Constants.key.launchApp("Version 1.0 (22)")); LogCapture.
+	 * info("Application installed and launched successfully......!!!!"); }
 	 */
 	@Given("^ios older version (CD|TorFX) app \"([^\"]*)\" is installed on the device \"([^\"]*)\" and launched successfully$")
 	public void ios_older_version_app_is_installed_on_the_device_and_launched_successfully(String optionalValue,
@@ -3738,7 +3804,8 @@ public class IOSAppStepDefinition {
 			// Assert.assertEquals("PASS",
 			// Constants.key.clearData(vObjTheyGetInput));
 			Constants.key.clearData(vObjTheyGetInput);
-			// Assert.assertEquals("PASS", Constants.key.writeInInput(vObjYouPayAmtInput,
+			// Assert.assertEquals("PASS",
+			// Constants.key.writeInInput(vObjYouPayAmtInput,
 			// data));
 			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjTheyGetInput, data));
 			Thread.sleep(000);
@@ -3785,7 +3852,8 @@ public class IOSAppStepDefinition {
 			Constants.TempData = Constants.key.getAttributeValue(vObjYouPayInput, "value");
 			LogCapture.info("Before calculation you pay amount : " + Constants.TempData + vYouPayCurrency);
 			Constants.key.clearData(vObjTheyGetInput);
-			// Assert.assertEquals("PASS", Constants.key.writeInInput(vObjYouPayAmtInput,
+			// Assert.assertEquals("PASS",
+			// Constants.key.writeInInput(vObjYouPayAmtInput,
 			// data));
 			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjTheyGetInput, data));
 			Thread.sleep(4000);
@@ -3818,8 +3886,9 @@ public class IOSAppStepDefinition {
 		 * "value"); String vTheyGetAmt =
 		 * Constants.key.getAttributeValue(vObjTheyGetInput, "value");
 		 * System.out.println(vYouPayAmt); System.out.println(vTheyGetAmt);
-		 * Assert.assertEquals("PASS", Constants.key.VerifyText(vTheyGetAmt, "0.00"));
-		 * Assert.assertEquals("PASS", Constants.key.VerifyText(vYouPayAmt, "0.00"));
+		 * Assert.assertEquals("PASS", Constants.key.VerifyText(vTheyGetAmt,
+		 * "0.00")); Assert.assertEquals("PASS",
+		 * Constants.key.VerifyText(vYouPayAmt, "0.00"));
 		 */
 	}
 
@@ -4083,7 +4152,8 @@ public class IOSAppStepDefinition {
 	public void ios_user_accepts_terms_and_condition(String optionalValue) throws Throwable {
 		if (optionalValue.equalsIgnoreCase("accepts terms and condition")) {
 			String vObjTermsAndCondition = Constants.IOSRegstOR.getProperty("TermsAndCondition");
-			// Assert.assertEquals("PASS", Constants.key.scrollInIOS("Continue", "down"));
+			// Assert.assertEquals("PASS", Constants.key.scrollInIOS("Continue",
+			// "down"));
 			Assert.assertEquals("PASS", Constants.key.click(vObjTermsAndCondition));
 		} else if (optionalValue.equalsIgnoreCase("should verify details")) {
 			String vObjLoaderVerifyDetails = Constants.IOSRegstOR.getProperty("LoaderVerifyDetails");
@@ -4327,7 +4397,8 @@ public class IOSAppStepDefinition {
 			String vObjBtnContinue = Constants.IOSRegstOR.getProperty("BtnContinue");
 			// String vObjBtnContinue =
 			// Constants.IOSAddWalletOR.getProperty("ContinueBtn2");
-			// Assert.assertEquals("PASS", Constants.key.scrollInIOS("Continue", "down"));
+			// Assert.assertEquals("PASS", Constants.key.scrollInIOS("Continue",
+			// "down"));
 			Assert.assertEquals("PASS", Constants.key.eleLocatedDisplayed(vObjBtnContinue));
 			String atbValue = Constants.key.getAttributeValue(vObjBtnContinue, "enabled").toString();
 			Assert.assertEquals("PASS", Constants.key.VerifyText("true", atbValue));
@@ -4335,7 +4406,8 @@ public class IOSAppStepDefinition {
 		}
 		if (optionalValue.equalsIgnoreCase("disabled")) {
 			String vObjBtnContinue = Constants.IOSRegstOR.getProperty("BtnContinue");
-			// Assert.assertEquals("PASS", Constants.key.scrollInIOS("Continue", "down"));
+			// Assert.assertEquals("PASS", Constants.key.scrollInIOS("Continue",
+			// "down"));
 			Assert.assertEquals("PASS", Constants.key.eleLocatedDisplayed(vObjBtnContinue));
 			String atbValue = Constants.key.getAttributeValue(vObjBtnContinue, "enabled").toString();
 			Assert.assertEquals("PASS", Constants.key.VerifyText("false", atbValue));
@@ -4348,8 +4420,10 @@ public class IOSAppStepDefinition {
 			throws Throwable {
 		if (optionalValue.equalsIgnoreCase("enabled")) {
 			String vObjBtnContinue = Constants.IOSRegstOR.getProperty("BtnContinue");
-			// String vObjBtnContinue = Constants.IOSAddWalletOR.getProperty("ContinueBtn");
-			// Assert.assertEquals("PASS", Constants.key.scrollInIOS("Continue", "down"));
+			// String vObjBtnContinue =
+			// Constants.IOSAddWalletOR.getProperty("ContinueBtn");
+			// Assert.assertEquals("PASS", Constants.key.scrollInIOS("Continue",
+			// "down"));
 			Assert.assertEquals("PASS", Constants.key.eleLocatedDisplayed(vObjBtnContinue));
 			String atbValue = Constants.key.getAttributeValue(vObjBtnContinue, "enabled").toString();
 			Assert.assertEquals("PASS", Constants.key.VerifyText("true", atbValue));
@@ -4477,7 +4551,8 @@ public class IOSAppStepDefinition {
 	public void ios_user_click_on_continue_button(String optionalValue) throws Throwable {
 		if (optionalValue.equalsIgnoreCase("continue button")) {
 			String vObjBtnContinue = Constants.IOSRegstOR.getProperty("BtnContinue");
-			// Assert.assertEquals("PASS", Constants.key.scrollInIOS("Continue", "down"));
+			// Assert.assertEquals("PASS", Constants.key.scrollInIOS("Continue",
+			// "down"));
 			Assert.assertEquals("PASS", Constants.key.click(vObjBtnContinue));
 		} else if (optionalValue.equalsIgnoreCase("search address")) {
 			String vObjSearchAddFinder = Constants.IOSRegstOR.getProperty("SearchAddFinder");
@@ -4644,10 +4719,12 @@ public class IOSAppStepDefinition {
 		if (optionalValue1.equalsIgnoreCase("country")) {
 			Thread.sleep(10000);
 			String vObjCountryCell = Constants.IOSMyCardOR.getProperty("CountryCell");
-			// String vObjCountryLabel = Constants.IOSMyCardOR.getProperty("CountryLabel");
+			// String vObjCountryLabel =
+			// Constants.IOSMyCardOR.getProperty("CountryLabel");
 			// commenting above line as xpath is changed for iPhone 7 device
 			String vObjCountryLabel = Constants.IOSMyCardOR.getProperty("CountryLabel2");
-			// String vObjCountryCode = Constants.IOSMyCardOR.getProperty("CountryCode");
+			// String vObjCountryCode =
+			// Constants.IOSMyCardOR.getProperty("CountryCode");
 			String vObjCountryCode = Constants.IOSMyCardOR.getProperty("CountryCode2");
 
 			if (data.equalsIgnoreCase("USA")) {
@@ -4717,8 +4794,10 @@ public class IOSAppStepDefinition {
 			throws Throwable {
 		String result = "FAIL";
 		String vObjCountryCell = Constants.IOSMyCardOR.getProperty("CountryCell");
-		// String vObjCountryLabel = Constants.IOSMyCardOR.getProperty("CountryLabel");
-		// String vObjCountryCode = Constants.IOSMyCardOR.getProperty("CountryCode");
+		// String vObjCountryLabel =
+		// Constants.IOSMyCardOR.getProperty("CountryLabel");
+		// String vObjCountryCode =
+		// Constants.IOSMyCardOR.getProperty("CountryCode");
 		String vObjCountryLabel = Constants.IOSMyCardOR.getProperty("CountryLabel2");
 		String vObjCountryCode = Constants.IOSMyCardOR.getProperty("CountryCode2");
 		int noOfCountry = Constants.key.getElementList(vObjCountryLabel).size();
@@ -4816,7 +4895,8 @@ public class IOSAppStepDefinition {
 		String vObjClearIcon = "";
 		if (optionalValue.equalsIgnoreCase("(X)")) {
 			if ((AppName).equalsIgnoreCase("CD")) {
-				// vObjClearIcon = Constants.IOSRecipientOR.getProperty("SearchClose");
+				// vObjClearIcon =
+				// Constants.IOSRecipientOR.getProperty("SearchClose");
 				vObjClearIcon = Constants.IOSRegstOR.getProperty("SearchClose");
 			}
 
@@ -4876,12 +4956,14 @@ public class IOSAppStepDefinition {
 			LogCapture.info("Individual recipient type selected...... ");
 			Assert.assertEquals("PASS", Constants.key.click(vObjFirstNameLbl));
 			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFirstNameInput, Constants.Data[0].toString()));
-			// Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFirstNameInput,
+			// Assert.assertEquals("PASS",
+			// Constants.key.writeInInput(vObjFirstNameInput,
 			// Constants.key.getAlphaNumericString(6)));
 			Assert.assertEquals("PASS", Constants.key.click(vObjDoneBtn));
 			Assert.assertEquals("PASS", Constants.key.click(vObjLastNameLbl));
 			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjLastNameInput, Constants.Data[1].toString()));
-			// Assert.assertEquals("PASS", Constants.key.writeInInput(vObjLastNameInput,
+			// Assert.assertEquals("PASS",
+			// Constants.key.writeInInput(vObjLastNameInput,
 			// Constants.key.getAlphaNumericString(8)));
 			Assert.assertEquals("PASS", Constants.key.click(vObjDoneBtn));
 			Constants.DataMap.put("FirstName", Constants.Data[0].toString());
@@ -4894,7 +4976,8 @@ public class IOSAppStepDefinition {
 			String vObjDoneBtn = Constants.IOSLoginOR.getProperty("DoneBtn");
 			Assert.assertEquals("PASS", Constants.key.click(vObjRecipientCompanyBtn));
 			Assert.assertEquals("PASS", Constants.key.click(vObjCompanyNameLbl));
-			// Assert.assertEquals("PASS", Constants.key.writeInInput(vObjCompanyNameInput,
+			// Assert.assertEquals("PASS",
+			// Constants.key.writeInInput(vObjCompanyNameInput,
 			// recipientName));
 			// String UniqueString =Constants.key.getAlphaNumericString(8);
 			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjCompanyNameInput, recipientName));
@@ -5275,8 +5358,10 @@ public class IOSAppStepDefinition {
 			Assert.assertEquals("PASS", Constants.key.click(vObjTransitInputLbl));
 			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjTransitInput, Constants.Data[0].toString()));
 			Assert.assertEquals("PASS", Constants.key.click(vObjDoneBtn));
-			// Assert.assertEquals("PASS", Constants.key.click(vObjSwiftInputLbl));
-			// Assert.assertEquals("PASS", Constants.key.writeInInput(vObjSwiftInput,
+			// Assert.assertEquals("PASS",
+			// Constants.key.click(vObjSwiftInputLbl));
+			// Assert.assertEquals("PASS",
+			// Constants.key.writeInInput(vObjSwiftInput,
 			// Constants.Data[1].toString()));
 			// Assert.assertEquals("PASS", Constants.key.click(vObjDoneBtn));
 			LogCapture.info(bankCodeType + " code : " + bankCode + " entered .............");
@@ -5585,8 +5670,10 @@ public class IOSAppStepDefinition {
 		String vObjAddLine1Input = Constants.IOSRecipientOR.getProperty("AddLine1Input");
 		String vObjTownCityInput = Constants.IOSRecipientOR.getProperty("TownCityInput");
 		String vObjPostCodeInput = Constants.IOSRecipientOR.getProperty("PostCodeInput");
-		// String vObjPostCodeInput = Constants.IOSRegstOR.getProperty("PostCodeInput");
-		// String vObjPasswordInput = Constants.IOSRegstOR.getProperty("PasswordInput");
+		// String vObjPostCodeInput =
+		// Constants.IOSRegstOR.getProperty("PostCodeInput");
+		// String vObjPasswordInput =
+		// Constants.IOSRegstOR.getProperty("PasswordInput");
 		String vObjPasswordInput = Constants.IOSRegstOR.getProperty("SetPassword");
 
 		String vObjDoneBtn = Constants.IOSLoginOR.getProperty("DoneBtn");
@@ -6479,8 +6566,10 @@ public class IOSAppStepDefinition {
 			LogCapture.info("Post code removed by user........... ");
 		} else if (optionalField.equalsIgnoreCase("post code of canada country")) {
 			// System.out.println("I am in post code loop");
-			// Assert.assertEquals("PASS", Constants.key.click(vObjTownCityPHolder));
-			// Assert.assertEquals("PASS", Constants.key.writeInInput(vObjTownCityInput,
+			// Assert.assertEquals("PASS",
+			// Constants.key.click(vObjTownCityPHolder));
+			// Assert.assertEquals("PASS",
+			// Constants.key.writeInInput(vObjTownCityInput,
 			// "Test City"));
 			Assert.assertEquals("PASS", Constants.key.click(vObjCityPHolder));
 			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjCityInput, "Test city"));
@@ -6991,7 +7080,8 @@ public class IOSAppStepDefinition {
 			Assert.assertEquals("PASS", Constants.key.click(vObjMedicareDropDown));
 			// String vObjDOBPickerField =
 			// Constants.IOSRegstOR.getProperty("DOBPickerField");
-			// Assert.assertEquals("PASS", Constants.key.writeInInput(vObjDOBPickerField,
+			// Assert.assertEquals("PASS",
+			// Constants.key.writeInInput(vObjDOBPickerField,
 			// data));
 			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjMedicareRefInput, data));
 
@@ -7144,7 +7234,7 @@ public class IOSAppStepDefinition {
 		String vObjPersonalDetLbl = Constants.IOSDashOR.getProperty("PersonalDetLbl");
 		Assert.assertEquals("PASS", Constants.key.eleLocatedDisplayed(vObjPersonalDetLbl));
 		String atbValue = Constants.key.getAttributeValue(vObjAccountLbl, "value").toString();
-		Assert.assertEquals("PASS", Constants.key.VerifyText(atbValue, "Account"));
+		Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.VerifyText(atbValue, "Account"));
 		LogCapture.info("Account setting screen displayed.........");
 	}
 
@@ -7164,19 +7254,23 @@ public class IOSAppStepDefinition {
 	@When("^ios user removes account by using manage device option$")
 	public void ios_user_removes_account_by_using_manage_device_option() throws Throwable {
 		/*
-		 * String vObjCloseButton = Constants.IOSAccountOR.getProperty("CloseButton");
-		 * String vObjAccountIcon = Constants.IOSDashOR.getProperty("AccountIcon");
-		 * String vObjManageDevice = Constants.IOSDashOR.getProperty("ManageDevice");
-		 * String vObjRemoveAccountBtn =
+		 * String vObjCloseButton =
+		 * Constants.IOSAccountOR.getProperty("CloseButton"); String
+		 * vObjAccountIcon = Constants.IOSDashOR.getProperty("AccountIcon");
+		 * String vObjManageDevice =
+		 * Constants.IOSDashOR.getProperty("ManageDevice"); String
+		 * vObjRemoveAccountBtn =
 		 * Constants.IOSDashOR.getProperty("RemoveAccountBtn"); String
-		 * vObjRemoveAccountBtn1 = Constants.IOSDashOR.getProperty("RemoveAccountBtn1");
-		 * String vObjResetBtn = Constants.IOSDashOR.getProperty("ResetBtn");
+		 * vObjRemoveAccountBtn1 =
+		 * Constants.IOSDashOR.getProperty("RemoveAccountBtn1"); String
+		 * vObjResetBtn = Constants.IOSDashOR.getProperty("ResetBtn");
 		 * Assert.assertEquals("PASS",Constants.key.click(vObjCloseButton));
 		 * Assert.assertEquals("PASS", Constants.key.click(vObjAccountIcon));
-		 * Assert.assertEquals("PASS", Constants.key.click(vObjManageDevice)); if
-		 * (loginCount < 1) { Assert.assertEquals("PASS",
+		 * Assert.assertEquals("PASS", Constants.key.click(vObjManageDevice));
+		 * if (loginCount < 1) { Assert.assertEquals("PASS",
 		 * Constants.key.click(vObjRemoveAccountBtn)); } else {
-		 * Assert.assertEquals("PASS", Constants.key.click(vObjRemoveAccountBtn1)); }
+		 * Assert.assertEquals("PASS",
+		 * Constants.key.click(vObjRemoveAccountBtn1)); }
 		 * Assert.assertEquals("PASS", Constants.key.click(vObjResetBtn));
 		 * LogCapture.info("User clicked on reset account button .........");
 		 * loginCount++;
@@ -7591,7 +7685,8 @@ public class IOSAppStepDefinition {
 	public void ios_user_click_on_swap() throws Throwable {
 		String vObjSwapBtn = Constants.IOSDashOR.getProperty("SwapBtn");
 		String vObjYouPayInput = Constants.IOSDashOR.getProperty("YouPayInput");
-		// String vYouPayInput = Constants.key.getAttributeValue(vObjYouPayInput,
+		// String vYouPayInput =
+		// Constants.key.getAttributeValue(vObjYouPayInput,
 		// "value").toString();
 		String vYouPayInput = Constants.key.getAttributeValue(vObjYouPayInput, "value").toString();
 		String vObjTheyGetInput = Constants.IOSDashOR.getProperty("TheyGetInput");
@@ -7612,7 +7707,8 @@ public class IOSAppStepDefinition {
 			LogCapture.info("Before swap you pay amount :" + Constants.DataMap.get("YouPayAmount"));
 			LogCapture.info("After swap you pay amount :" + vYouPayInput);
 			Thread.sleep(7000);
-			// Assert.assertEquals("PASS", Constants.key.VerifyText(vYouPayInput,
+			// Assert.assertEquals("PASS",
+			// Constants.key.VerifyText(vYouPayInput,
 			// Constants.DataMap.get("YouPayAmount")));
 		}
 		if (optionalValue.equalsIgnoreCase("they get")) {
@@ -8033,8 +8129,8 @@ public class IOSAppStepDefinition {
 		if (optionalValue.equalsIgnoreCase("wrong cvv entered")) {
 			/*
 			 * String vObjInvalidCVVLbl =
-			 * Constants.IOSSendMoneyOR.getProperty("InvalidCVVLbl"); String vObjDoneBtn =
-			 * Constants.IOSMyCardOR.getProperty("DoneBtn");
+			 * Constants.IOSSendMoneyOR.getProperty("InvalidCVVLbl"); String
+			 * vObjDoneBtn = Constants.IOSMyCardOR.getProperty("DoneBtn");
 			 * Assert.assertEquals("PASS",Constants.key.click(vObjDoneBtn));
 			 * Assert.assertEquals("PASS",
 			 * Constants.key.eleLocatedDisplayed(vObjInvalidCVVLbl));
@@ -8085,7 +8181,8 @@ public class IOSAppStepDefinition {
 
 		if (optionalValue1.equalsIgnoreCase("debit card") && optionalValue2.equalsIgnoreCase("inactive")) {
 
-			// Assert.assertEquals("PASS", Constants.key.Swipe(vObjActiveBank, "right", 1));
+			// Assert.assertEquals("PASS", Constants.key.Swipe(vObjActiveBank,
+			// "right", 1));
 
 			if ((AppName).equalsIgnoreCase("CD")) {
 				String vObjInactiveCard = Constants.IOSSendMoneyOR.getProperty("InactiveCard");
@@ -8162,7 +8259,8 @@ public class IOSAppStepDefinition {
 		String vObjResponseDD = Constants.IOSSendMoneyOR.getProperty("ResponseDD");
 		String vObj3DSubmitBtn = Constants.IOSSendMoneyOR.getProperty("3DSubmitBtn");
 		String vObjDoneBtn = Constants.IOSLoginOR.getProperty("DoneBtn");
-		// String vObjQAPickerWheel = Constants.IOSLoginOR.getProperty("QAPickerWheel");
+		// String vObjQAPickerWheel =
+		// Constants.IOSLoginOR.getProperty("QAPickerWheel");
 		String vObjNewQAPickerWheel = "//XCUIElementTypeOther[@value='Cardholder authenticated']";
 		Assert.assertEquals("PASS", Constants.key.click(vObjResponseDD));
 		Assert.assertEquals("PASS", Constants.key.click(vObjNewQAPickerWheel));
@@ -9009,8 +9107,16 @@ public class IOSAppStepDefinition {
 
 	@When("^ios user selects the currency from searched result list$")
 	public void ios_user_selects_the_currency_from_searched_result_list() throws Throwable {
-		String vObjCurrencyName = Constants.IOSAccountOR.getProperty("NewCurrencyName"); // Need to merge this with data
-																							// which we get form
+		String vObjCurrencyName = Constants.IOSAccountOR.getProperty("NewCurrencyName"); // Need
+																							// to
+																							// merge
+																							// this
+																							// with
+																							// data
+																							// which
+																							// we
+																							// get
+																							// form
 																							// examples
 		Assert.assertEquals("PASS", Constants.key.click(vObjCurrencyName));
 		LogCapture.info("User selected currency name .......");
@@ -9346,20 +9452,20 @@ public class IOSAppStepDefinition {
 		String vObjDoneBtn = Constants.IOSLoginOR.getProperty("DoneBtn");
 
 		if (optionalValue.equalsIgnoreCase("add recipient")) {
-			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFirstPinInput, "5"));
-			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjSecondPinInput, "4"));
-			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjThirdPinInput, "3"));
-			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFourthPinInput, "2"));
-			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFifthPinInput, "1"));
+			Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.writeInInput(vObjFirstPinInput, "5"));
+			Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.writeInInput(vObjSecondPinInput, "4"));
+			Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.writeInInput(vObjThirdPinInput, "3"));
+			Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.writeInInput(vObjFourthPinInput, "2"));
+			Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.writeInInput(vObjFifthPinInput, "1"));
 			LogCapture.info("User has entered valid otp on add recipient.........");
 		} else if (optionalValue.equalsIgnoreCase("login") || (optionalValue.equalsIgnoreCase("Registration"))) {
 
-			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFirstPinInput, "5"));
-			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjSecondPinInput, "4"));
-			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjThirdPinInput, "3"));
-			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFourthPinInput, "2"));
-			Assert.assertEquals("PASS", Constants.key.writeInInput(vObjFifthPinInput, "1"));
-			// Assert.assertEquals("PASS",
+			Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.writeInInput(vObjFirstPinInput, "5"));
+			Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.writeInInput(vObjSecondPinInput, "4"));
+			Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.writeInInput(vObjThirdPinInput, "3"));
+			Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.writeInInput(vObjFourthPinInput, "2"));
+			Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.writeInInput(vObjFifthPinInput, "1"));
+			// Assert.assertEquals(Constants.KEYWORD_PASS,
 			// Constants.key.click(vObjDoneBtn));
 			LogCapture.info("User has entered valid otp on login screen.........");
 		}
