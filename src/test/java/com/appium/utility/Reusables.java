@@ -1338,6 +1338,12 @@ public class Reusables {
 		String username = Constants.CONFIG.getProperty("BS_Username");
 		String accesskey = Constants.CONFIG.getProperty("BS_AccessToken");
 		try {
+			SimpleDateFormat formatDateTime = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+			String DateTime = formatDateTime.format(new Date());
+			SimpleDateFormat formatDayMonth = new SimpleDateFormat("dd MMMM");
+			String DayMonth = formatDayMonth.format(new Date());
+			SimpleDateFormat formatTimeStamp = new SimpleDateFormat("hh:mm:ss");
+			String TimeStamp = formatTimeStamp.format(new Date());
 			if (Constants.CONFIG.getProperty("platformNameIOS").equalsIgnoreCase("iOS")) {
 				String app = Constants.CONFIG.getProperty("CDApp");
 				// String iOSDeviceName =
@@ -1356,7 +1362,7 @@ public class Reusables {
 				// Constants.IOSDC.setCapability("build", "iOS _" + DayMonth);
 				// Constants.androidDc.setCapability("name", TimeStamp + " - "+
 				// Constants.TagNames);
-				// Constants.IOSDC.setCapability("build", DateTime);
+				Constants.IOSDC.setCapability("build", DateTime);
 				Constants.IOSDC.setCapability("name", "CD iOS");
 
 				if (app.equalsIgnoreCase("CD")) {

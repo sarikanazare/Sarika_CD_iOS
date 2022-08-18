@@ -19,7 +19,7 @@ Feature: To test account functionality
     #Then previous ios user credentials should be removed and onboarding screen should be displayed
     Examples: 
       | emailAddress     | password        |
-      | CDAuthorisedSIT3 | CDRegEmailPass1 |
+      | CDRegEmailId28 | CDRegEmailPass1 |
 
   @CD_Account_TC_02 @Acc_lot1
   Scenario Outline: To verify that personal details screen should be displayed when user click on personal details button

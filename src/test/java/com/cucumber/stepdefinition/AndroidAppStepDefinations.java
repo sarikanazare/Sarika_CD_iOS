@@ -31,11 +31,44 @@ public class AndroidAppStepDefinations {
 
 	@Given("^(android) user installed the new (CD|TorFx) app and launched successfully$")
 	public void android_user_installed_the_new_CD_app_and_launched_successfully(String Platform, String app) throws Throwable {
+		if (Constants.CONFIG.getProperty("isLocalJenkins").equals("true")) {
+			 Assert.assertEquals("PASS",Constants.key.launchApp(app));
+			LogCapture.info("Android CD Application installed and launched successfully...");
+		}
+		
+		else if (Constants.CONFIG.getProperty("isBrowserstackJenkins").equals("true")) {
+			Thread.sleep(10000);
 
+			String vDeviceID = Constants.CONFIG.getProperty("bAndroidDevice");
+			LogCapture.info("CD Android Application is launching on  device " + vDeviceID + "....");
+			try {
+				if (!Constants.JenkinsBrowser.isEmpty() || !Constants.JenkinsBrowser.equals("")) {
+					vDeviceID = Constants.JenkinsBrowser;
+					LogCapture.info("Device ID is :" + vDeviceID);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+			String vVersion = Constants.CONFIG.getProperty("bAndroidVersion");
+			LogCapture.info("CD Android Application is launching on  device version " + vVersion + "....");
+			try {
+				if (!Constants.BrowserStack.isEmpty() || !Constants.BrowserStack.equals("")) {
+					vVersion = Constants.BrowserStack;
+					LogCapture.info("Device Version is :" + vVersion);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			String rep = vDeviceID.replaceAll("-", " ");
+			Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.launchAppANDROIDBrowserstack(rep, vVersion));
+			LogCapture.info("CD iOS Application installed and launched successfully......!!!!");
+		}
 		//  Assert.assertEquals("PASS",Constants.key.launchApp(app));
-		Thread.sleep(10000);
-		Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.launchAppOnBrowserStack(Platform, app));
-		LogCapture.info(app + " Application installed and launched successfully......!!!!");
+	//	Thread.sleep(10000);
+		//Assert.assertEquals(Constants.KEYWORD_PASS, Constants.key.launchAppOnBrowserStack(Platform, app));
+		//LogCapture.info(app + " Application installed and launched successfully......!!!!");
 	}
 
 	@Given("^android user launched existing (CD|TorFx) app on the device successfully$")

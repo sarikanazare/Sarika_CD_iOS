@@ -53,7 +53,7 @@ public class IOSAppStepDefinition {
 			}
 
 			String vVersion = Constants.CONFIG.getProperty("bIOSVersion");
-			LogCapture.info("CD Application is launching on  device version " + vVersion + "....");
+			LogCapture.info("CD iOS Application is launching on  device version " + vVersion + "....");
 			try {
 				if (!Constants.BrowserStack.isEmpty() || !Constants.BrowserStack.equals("")) {
 					vVersion = Constants.BrowserStack;
@@ -76,7 +76,7 @@ public class IOSAppStepDefinition {
 		//String vIOSPlatformVersion = Constants.CONFIG.getProperty("Loc_IOSPlatformVersion");
 		//iOSPlatformVersion = Double.parseDouble(vIOSPlatformVersion);
 		AppName = optionalValue;
-		LogCapture.info(optionalValue + " Application installed and launched successfully......!!!!");
+		//LogCapture.info(optionalValue + " Application installed and launched successfully......!!!!");
 	}
 
 	@Given("^ios user launched already installed (CD|TorFx) app successfully$")
