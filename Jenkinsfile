@@ -6,7 +6,7 @@ pipeline {
   stages {
     stage('Run functional test cases') {
       steps {
-       bat "mvn -f JenkinsGitConfigure\BNTTeamWork\pom.xml clean install -DjenkinsBrowser=${params.device} -DbrowserStack=${params.version} -DjenkinsBrowser=${params.tagName}"
+       bat "mvn -f JenkinsGitConfigure\BNTTeamWork\pom.xml clean install -DjenkinsBrowser=${params.device} -DbrowserStack=${params.version} -DtagName=${params.tagName}"
       }
     }
   }
